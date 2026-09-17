@@ -1,0 +1,46 @@
+[
+  {
+    "id": "food_01",
+    "word": "Burger",
+    "category": "Food",
+    "clues": [
+      "It is fast food",
+      "It has meat inside",
+      "It has bread on top",
+      "It is held by hand",
+      "It goes with fries",
+      "It is in McDonald's",
+      "It can be beef or chicken",
+      "It has layers",
+      "It has cheese in it",
+      "It is served hot",
+      "It is popular with kids",
+      "It has high calories",
+      "It is wrapped in paper",
+      "It is the main dish",
+      "It is tasty"
+    ]
+  },
+  {
+    "id": "food_02",
+    "word": "Sandwich",
+    "category": "Food",
+    "clues": [
+      "It is fast food",
+      "It uses sliced bread",
+      "It is triangle shaped",
+      "It has ham inside",
+      "It can be eaten cold",
+      "It is fast to make",
+      "It is good for breakfast",
+      "It has no round bun",
+      "It goes with milk",
+      "It has no crust sometimes",
+      "It has mayo inside",
+      "It is in convenience stores",
+      "It is not fried",
+      "It is wrapped in plastic",
+      "It holds everything"
+    ]
+  }
+]

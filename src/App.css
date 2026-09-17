@@ -1,38 +1,231 @@
-.App {
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  min-height: 100vh;
+  padding: 48px 24px 64px;
+  color: #1f2937;
+  background: linear-gradient(135deg, #f7f3ff 0%, #eef7ff 100%);
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app-container h1 {
+  margin: 0;
+  color: #312e81;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.welcome-panel {
+  max-width: 560px;
+  margin: 90px auto 0;
+  padding: 52px 32px;
+  border: 1px solid #e0e7ff;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 24px 60px rgba(49, 46, 129, .14);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.welcome-panel p {
+  margin: 0 0 30px;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.error-msg {
+  margin: 24px auto;
+  color: #b91c1c;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 22px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.primary-button {
   color: white;
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
 }
 
-.App-link {
-  color: #61dafb;
+.secondary-button {
+  color: #4338ca;
+  background: #e0e7ff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1180px;
+  margin: 32px auto 24px;
+  padding: 16px 22px;
+  border-radius: 16px;
+  color: #4338ca;
+  background: rgba(255, 255, 255, .78);
+  font-weight: 700;
+}
+
+.npc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.npc-card {
+  min-height: 385px;
+  padding: 18px 16px 20px;
+  border: 3px solid transparent;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.npc-card:hover,
+.npc-card.active {
+  transform: translateY(-5px);
+  border-color: #818cf8;
+  box-shadow: 0 18px 34px rgba(99, 102, 241, .22);
+}
+
+.word-label {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: #3730a3;
+  background: #eef2ff;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.person {
+  position: relative;
+  width: 116px;
+  height: 142px;
+  margin: 10px auto 4px;
+}
+
+.person-head {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  width: 46px;
+  height: 46px;
+  border: 4px solid #334155;
+  border-radius: 50%;
+  background: #fcd5b5;
+}
+
+.person-body {
+  position: absolute;
+  top: 48px;
+  left: 29px;
+  width: 58px;
+  height: 62px;
+  border-radius: 18px 18px 8px 8px;
+  background: #818cf8;
+}
+
+.npc-card h2 {
+  margin: 4px 0 12px;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.npc-card ul {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #475569;
+  background: #f8fafc;
+  text-align: left;
+  list-style: none;
+}
+
+.npc-card li {
+  padding: 5px 0;
+  font-size: .9rem;
+  line-height: 1.45;
+}
+
+.game-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.vote-feedback {
+  margin: 22px 0 -14px;
+  color: #b45309;
+  font-weight: 700;
+}
+
+.result-banner {
+  max-width: 600px;
+  margin: 30px auto 0;
+  padding: 24px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
+}
+
+.result-banner h2 {
+  margin-top: 0;
+}
+
+.result-banner p {
+  color: #64748b;
+}
+
+.result-banner.WON h2 {
+  color: #15803d;
+}
+
+.result-banner.LOST h2 {
+  color: #b91c1c;
+}
+
+@media (max-width: 800px) {
+  .npc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 32px 14px 48px;
+  }
+
+  .npc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-header {
+    font-size: .9rem;
+  }
+
+  .game-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
