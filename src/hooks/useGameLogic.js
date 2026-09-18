@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
+// Manage the game state and expose actions used by the UI.
 export function useGameLogic() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,7 +12,7 @@ export function useGameLogic() {
   const [selectedNpcId, setSelectedNpcId] = useState(null);
   const [voteFeedback, setVoteFeedback] = useState(null);
 
-
+  // Start a new game and reveal only the first clue for each NPC.
   const startGame = async (selectedCategory) => {
     setLoading(true);
     setError(null);
@@ -38,6 +39,7 @@ export function useGameLogic() {
     }
   };
 
+  // Select an NPC while the game is still in progress.
   const selectNpc = (npcId) => {
     if (gameStatus === 'PLAYING') {
       setSelectedNpcId(npcId);
@@ -45,6 +47,7 @@ export function useGameLogic() {
     }
   };
 
+  // Reveal one additional clue for every NPC.
   const nextRound = () => {
     if (!game || gameStatus !== 'PLAYING' || currentRound >= 5) return;
 
@@ -60,6 +63,7 @@ export function useGameLogic() {
     setVoteFeedback(null);
   };
 
+  // Check the selected NPC and either end the game or provide feedback.
   const submitVote = () => {
     if (!selectedNpcId || gameStatus !== 'PLAYING') return;
 

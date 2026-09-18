@@ -5,6 +5,7 @@ import './App.css';
 
 const SELECTED_CATEGORY = 'Food';
 
+// Render the game screen and connect user actions to the game logic hook.
 function App() {
   const {
     loading,
@@ -19,6 +20,9 @@ function App() {
     submitVote,
     nextRound
   } = useGameLogic();
+
+  // NPC words remain hidden until the game reaches a final result.
+  const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
 
   return (
     <div className="app-container">
@@ -49,7 +53,7 @@ function App() {
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
                 onClick={() => selectNpc(npc.id)}
               >
-                <div className="word-label">{npc.word}</div>
+                <div className="word-label">{isGameSettled ? npc.word : '???'}</div>
                 <div className="person" aria-hidden="true">
                   <div className="person-head" />
                   <div className="person-body" />
@@ -72,7 +76,7 @@ function App() {
                 Vote for Undercover
               </button>
               <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 5}>
-                {currentRound >= 5 ? 'Final Round' : 'Need More Clues'}
+                {currentRound >= 5 ? 'Final Round' : 'More Clues'}
               </button>
             </div>
           )}
