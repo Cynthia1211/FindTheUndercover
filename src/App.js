@@ -54,11 +54,8 @@ function App() {
                 onClick={() => selectNpc(npc.id)}
               >
                 <div className="word-label">{isGameSettled ? npc.word : '???'}</div>
-                <div className="person" aria-hidden="true">
-                  <div className="person-head" />
-                  <div className="person-body" />
-                </div>
-                <h2>{npc.name}</h2>
+                <img className="npc-image" src={npc.image} alt={`${npc.name} avatar`} />
+                {/* <h2>{npc.name}</h2> */}
                 <ul>
                   {npc.displayedClues.map((clue, i) => (
                     <li key={i}><strong>Clue {i + 1}:</strong> {clue}</li>
