@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { useGameLogic } from './hooks/useGameLogic';
+import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import './App.css';
 
 const SELECTED_CATEGORY = 'Food';
@@ -16,6 +16,7 @@ function App() {
     selectedNpcId,
     voteFeedback,
     timeLeft,
+    attemptsLeft,
     startGame,
     selectNpc,
     submitVote,
@@ -45,6 +46,7 @@ function App() {
           <header className="game-header">
             <span>Category: {game.category}</span>
             <span>Round: {currentRound} / 5</span>
+            <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
           </header>
 
           {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
