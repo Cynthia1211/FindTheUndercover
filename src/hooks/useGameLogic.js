@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
+export const MAX_ATTEMPTS = 3;
+
 // Manage the game state and expose actions used by the UI.
 export function useGameLogic() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +14,7 @@ export function useGameLogic() {
   const [selectedNpcId, setSelectedNpcId] = useState(null);
   const [voteFeedback, setVoteFeedback] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
+  const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
 
   // Start the final-round countdown and automatically lose when it expires.
   useEffect(() => {
@@ -41,6 +44,7 @@ export function useGameLogic() {
     setVoteFeedback(null);
     setCurrentRound(1);
     setTimeLeft(null);
+    setAttemptsLeft(MAX_ATTEMPTS);
 
     try {
       const wordsData = await fetchWordBank();
@@ -99,7 +103,10 @@ export function useGameLogic() {
       return;
     }
 
-    if (currentRound >= 5) {
+    const remainingAttempts = attemptsLeft - 1;
+    setAttemptsLeft(remainingAttempts);
+
+    if (remainingAttempts <= 0 || currentRound >= 5) {
       setGameStatus('LOST');
     } else {
       setVoteFeedback('That is not the undercover. Try again!');
@@ -117,6 +124,7 @@ export function useGameLogic() {
     selectedNpcId,
     voteFeedback,
     timeLeft,
+    attemptsLeft,
     startGame,
     selectNpc,
     submitVote,
