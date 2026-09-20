@@ -15,6 +15,7 @@ function App() {
     currentRound,
     selectedNpcId,
     voteFeedback,
+    timeLeft,
     startGame,
     selectNpc,
     submitVote,
@@ -45,6 +46,12 @@ function App() {
             <span>Category: {game.category}</span>
             <span>Round: {currentRound} / 5</span>
           </header>
+
+          {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
+            <p className="countdown" role="timer">
+              All clues revealed! Find the undercover in {timeLeft}s
+            </p>
+          )}
 
           <div className="npc-grid">
             {game.npcs.map(npc => (

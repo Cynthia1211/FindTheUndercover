@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
@@ -11,6 +11,27 @@ export function useGameLogic() {
   const [currentRound, setCurrentRound] = useState(1);
   const [selectedNpcId, setSelectedNpcId] = useState(null);
   const [voteFeedback, setVoteFeedback] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(null);
+
+  // Start the final-round countdown and automatically lose when it expires.
+  useEffect(() => {
+    if (gameStatus !== 'PLAYING' || currentRound < 5 || timeLeft === null) {
+      return undefined;
+    }
+
+    if (timeLeft <= 0) {
+      setGameStatus('LOST');
+      setSelectedNpcId(null);
+      setVoteFeedback(null);
+      return undefined;
+    }
+
+    const timerId = setTimeout(() => {
+      setTimeLeft(previousTime => previousTime - 1);
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  }, [currentRound, gameStatus, timeLeft]);
 
   // Start a new game and reveal only the first clue for each NPC.
   const startGame = async (selectedCategory) => {
@@ -19,6 +40,7 @@ export function useGameLogic() {
     setSelectedNpcId(null);
     setVoteFeedback(null);
     setCurrentRound(1);
+    setTimeLeft(null);
 
     try {
       const wordsData = await fetchWordBank();
@@ -61,6 +83,7 @@ export function useGameLogic() {
     setGame({ ...game, npcs: npcsWithNewClues });
     setSelectedNpcId(null);
     setVoteFeedback(null);
+    setTimeLeft(nextRoundNumber === 5 ? 60 : null);
   };
 
   // Check the selected NPC and either end the game or provide feedback.
@@ -93,6 +116,7 @@ export function useGameLogic() {
     currentRound,
     selectedNpcId,
     voteFeedback,
+    timeLeft,
     startGame,
     selectNpc,
     submitVote,

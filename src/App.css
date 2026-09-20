@@ -84,6 +84,13 @@ button:disabled {
   font-weight: 700;
 }
 
+.countdown {
+  margin: 0 auto 20px;
+  color: #b91c1c;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
 .npc-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
