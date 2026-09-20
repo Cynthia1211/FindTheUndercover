@@ -1,5 +1,6 @@
 import { shuffle } from '../utils/shuffle';
 
+// Create the hidden game data for the game.
 export function createGameInstance(wordsData, selectedCategory) {
   if (!wordsData || wordsData.length === 0) {
     throw new Error("Empty Word Bank!");
@@ -10,11 +11,13 @@ export function createGameInstance(wordsData, selectedCategory) {
     throw new Error(`Category "${selectedCategory}" needs at least two words.`);
   }
   
+  // Choose two different words: one for civilians and one for the undercover.
   const civilianIndex = Math.floor(Math.random() * categoryWords.length);
   const civilianObj = categoryWords[civilianIndex];
   const remainingWords = categoryWords.filter((_, index) => index !== civilianIndex);
   const undercoverObj = remainingWords[Math.floor(Math.random() * remainingWords.length)];
 
+  // Divide civilian clues into separate packs so NPCs do not all have the same clues.
   const shuffledCivilianClues = shuffle(civilianObj.clues);
   const civilianCluePacks = [
     shuffledCivilianClues.slice(0, 5),
@@ -23,6 +26,7 @@ export function createGameInstance(wordsData, selectedCategory) {
   ];
   const undercoverCluePack = shuffle(undercoverObj.clues).slice(0, 5);
 
+  // Randomly assign the undercover role to one of the four NPCs.
   const undercoverIndex = Math.floor(Math.random() * 4);
   let civilianPackIndex = 0;
 
