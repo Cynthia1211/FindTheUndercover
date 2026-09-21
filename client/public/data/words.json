@@ -1,0 +1,90 @@
+[
+  {
+    "id": "food_01",
+    "word": "बर्गर",
+    "category": "Food",
+    "clues": [
+      "एतत् त्वरितभोजनम् अस्ति",
+      "अस्य अन्तः मांसम् अस्ति",
+      "अस्य उपरि रोटिका अस्ति",
+      "एतत् हस्तेन ध्रियते",
+      "एतत् भृष्टआलुकैः सह भुज्यते",
+      "एतत् मेकडोनाल्ड्-स्थाने प्राप्यते",
+      "एतत् गोमांसं वा कुक्कुटमांसं वा भवितुम् अर्हति",
+      "अस्य बहवः स्तराः सन्ति",
+      "अस्य अन्तः पणीरम् अस्ति",
+      "एतत् उष्णं परिविष्यते",
+      "एतत् बालेभ्यः रोचते",
+      "अस्मिन् अधिका ऊर्जा अस्ति",
+      "एतत् पत्रेण वेष्टितम् अस्ति",
+      "एतत् मुख्यम् अन्नम् अस्ति",
+      "एतत् स्वादु अस्ति"
+    ]
+  },
+  {
+    "id": "food_02",
+    "word": "सैण्डविच्",
+    "category": "Food",
+    "clues": [
+      "एतत् त्वरितभोजनम् अस्ति",
+      "अस्मिन् खण्डितरोटिका उपयुज्यते",
+      "अस्य आकारः त्रिकोणः अस्ति",
+      "अस्य अन्तः शूकरमांसम् अस्ति",
+      "एतत् शीतलं अपि भक्षितुं शक्यते",
+      "एतत् शीघ्रं रचयितुं शक्यते",
+      "एतत् प्रातःराशाय उत्तमम् अस्ति",
+      "अस्य वर्तुलरोटिका न भवति",
+      "एतत् दुग्धेन सह भुज्यते",
+      "कदाचित् अस्य बहिःभागः न भवति",
+      "अस्य अन्तः मयोनीस्-अन्नम् अस्ति",
+      "एतत् आपणेषु प्राप्यते",
+      "एतत् भृष्टं न अस्ति",
+      "एतत् प्लास्टिक-पत्रेण वेष्टितम् अस्ति",
+      "एतत् सर्वं धारयति"
+    ]
+  },
+  {
+    "id": "food_03",
+    "word": "Burger",
+    "category": "Food",
+    "clues": [
+      "It is fast food",
+      "It has meat inside",
+      "It has bread on top",
+      "It is held by hand",
+      "It goes with fries",
+      "It is in McDonald's",
+      "It can be beef or chicken",
+      "It has layers",
+      "It has cheese in it",
+      "It is served hot",
+      "It is popular with kids",
+      "It has high calories",
+      "It is wrapped in paper",
+      "It is the main dish",
+      "It is tasty"
+    ]
+  },
+  {
+    "id": "food_04",
+    "word": "Sandwich",
+    "category": "Food",
+    "clues": [
+      "It is fast food",
+      "It uses sliced bread",
+      "It is triangle shaped",
+      "It has ham inside",
+      "It can be eaten cold",
+      "It is fast to make",
+      "It is good for breakfast",
+      "It has no round bun",
+      "It goes with milk",
+      "It has no crust sometimes",
+      "It has mayo inside",
+      "It is in convenience stores",
+      "It is not fried",
+      "It is wrapped in plastic",
+      "It holds everything"
+    ]
+  }
+]

@@ -1,6 +1,7 @@
 // src/App.js
 import React from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
+import { playTextToSpeech } from './services/audioService';
 import './App.css';
 
 const SELECTED_CATEGORY = 'Food';
@@ -25,6 +26,14 @@ function App() {
 
   // NPC words remain hidden until the game reaches a final result.
   const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
+
+  //
+  const handleSpeak = (e, clueText) => {
+    e.stopPropagation(); // 防止触发选中小人的事件
+    playTextToSpeech(clueText).catch(() => {
+      // Detailed TTS diagnostics are logged by the audio service.
+    });
+  };
 
   return (
     <div className="app-container">
@@ -67,7 +76,11 @@ function App() {
                 {/* <h2>{npc.name}</h2> */}
                 <ul>
                   {npc.displayedClues.map((clue, i) => (
-                    <li key={i}><strong>Clue {i + 1}:</strong> {clue}</li>
+                    <li key={i}>
+                      {/* <strong>Clue {i + 1}:</strong> */}
+                      <button onClick={(e) => handleSpeak(e, clue)} style={{ marginLeft: '8px', cursor: 'pointer' }}>
+                        🔊
+                      </button> {clue}</li>
                   ))}
                 </ul>
               </div>
