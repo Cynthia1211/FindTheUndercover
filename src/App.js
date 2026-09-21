@@ -1,10 +1,11 @@
 // src/App.js
 import React from 'react';
-import { useGameLogic } from './hooks/useGameLogic';
+import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import './App.css';
 
 const SELECTED_CATEGORY = 'Food';
 
+// Render the game screen and connect user actions to the game logic hook.
 function App() {
   const {
     loading,
@@ -20,11 +21,16 @@ function App() {
     settings,
     voteFeedback,
     instruction,
+    timeLeft,
+    attemptsLeft,
     startGame,
     selectNpc,
     submitVote,
     nextRound
   } = useGameLogic();
+
+  // NPC words remain hidden until the game reaches a final result.
+  const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
 
   return (
     <div className="app-container">
@@ -77,7 +83,14 @@ function App() {
           <header className="game-header">
             <span>Category: {game.category}</span>
             <span>Round: {currentRound} / 5</span>
+            <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
           </header>
+
+          {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
+            <p className="countdown" role="timer">
+              All clues revealed! Find the undercover in {timeLeft}s
+            </p>
+          )}
 
           <div className="npc-grid">
             {game.npcs.map(npc => (
@@ -86,12 +99,9 @@ function App() {
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
                 onClick={() => selectNpc(npc.id)}
               >
-                <div className="word-label">{npc.word}</div>
-                <div className="person" aria-hidden="true">
-                  <div className="person-head" />
-                  <div className="person-body" />
-                </div>
-                <h2>{npc.name}</h2>
+                <div className="word-label">{isGameSettled ? npc.word : '???'}</div>
+                <img className="npc-image" src={npc.image} alt={`${npc.name} avatar`} />
+                {/* <h2>{npc.name}</h2> */}
                 <ul>
                   {npc.displayedClues.map((clue, i) => (
                     <li key={i}><strong>Clue {i + 1}:</strong> {clue}</li>
@@ -109,7 +119,7 @@ function App() {
                 Vote for Undercover
               </button>
               <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 5}>
-                {currentRound >= 5 ? 'Final Round' : 'Need More Clues'}
+                {currentRound >= 5 ? 'Final Round' : 'More Clues'}
               </button>
             </div>
           )}

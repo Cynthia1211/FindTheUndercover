@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
+export const MAX_ATTEMPTS = 3;
+
+// Manage the game state and expose actions used by the UI.
 export function useGameLogic() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,12 +16,38 @@ export function useGameLogic() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   
+  const [timeLeft, setTimeLeft] = useState(null);
+  const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
+
+  // Start the final-round countdown and automatically lose when it expires.
+  useEffect(() => {
+    if (gameStatus !== 'PLAYING' || currentRound < 5 || timeLeft === null) {
+      return undefined;
+    }
+
+    if (timeLeft <= 0) {
+      setGameStatus('LOST');
+      setSelectedNpcId(null);
+      setVoteFeedback(null);
+      return undefined;
+    }
+
+    const timerId = setTimeout(() => {
+      setTimeLeft(previousTime => previousTime - 1);
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  }, [currentRound, gameStatus, timeLeft]);
+
+  // Start a new game and reveal only the first clue for each NPC.
   const startGame = async (selectedCategory) => {
     setLoading(true);
     setError(null);
     setSelectedNpcId(null);
     setVoteFeedback(null);
     setCurrentRound(1);
+    setTimeLeft(null);
+    setAttemptsLeft(MAX_ATTEMPTS);
 
 
     try {
@@ -40,6 +69,7 @@ export function useGameLogic() {
     }
   };
 
+  // Select an NPC while the game is still in progress.
   const selectNpc = (npcId) => {
     if (gameStatus === 'PLAYING') {
       setSelectedNpcId(npcId);
@@ -47,6 +77,7 @@ export function useGameLogic() {
     }
   };
 
+  // Reveal one additional clue for every NPC.
   const nextRound = () => {
     if (!game || gameStatus !== 'PLAYING' || currentRound >= 5) return;
 
@@ -60,8 +91,10 @@ export function useGameLogic() {
     setGame({ ...game, npcs: npcsWithNewClues });
     setSelectedNpcId(null);
     setVoteFeedback(null);
+    setTimeLeft(nextRoundNumber === 5 ? 60 : null);
   };
 
+  // Check the selected NPC and either end the game or provide feedback.
   const submitVote = () => {
     if (!selectedNpcId || gameStatus !== 'PLAYING') return;
 
@@ -74,7 +107,10 @@ export function useGameLogic() {
       return;
     }
 
-    if (currentRound >= 5) {
+    const remainingAttempts = attemptsLeft - 1;
+    setAttemptsLeft(remainingAttempts);
+
+    if (remainingAttempts <= 0 || currentRound >= 5) {
       setGameStatus('LOST');
     } else {
       setVoteFeedback('That is not the undercover. Try again!');
@@ -114,6 +150,8 @@ export function useGameLogic() {
     closeSettings, 
     showSettings,
     instruction,
+    timeLeft,
+    attemptsLeft,
     startGame,
     selectNpc,
     submitVote,
