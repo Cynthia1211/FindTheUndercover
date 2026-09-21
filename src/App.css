@@ -64,11 +64,65 @@ button:disabled {
   color: white;
   background: #6366f1;
   box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  display: block;
+
+
+  width: 170px;
+  margin: 20px auto 0;
 }
 
 .secondary-button {
   color: #4338ca;
   background: #e0e7ff;
+}
+
+.third-button{
+  color: white;
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  display: block;
+ 
+  width: 170px;
+  margin: 20px auto 0;
+}
+
+.fourth-button{
+  color: white;
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  
+  width: 170px;
+  margin: 20px auto 0;
+
+}
+
+.div-button{
+   margin-top: 20px;
+
+}
+
+.popup{
+  width: 400px;
+  background: #e0e7ff;
+  border-radius: 16px;
+  position: fixed;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 400px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+}
+
+.popup h2{
+  color:black;
 }
 
 /* Game header and NPC card layout */

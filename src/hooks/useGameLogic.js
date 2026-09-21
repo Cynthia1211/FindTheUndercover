@@ -13,6 +13,9 @@ export function useGameLogic() {
   const [currentRound, setCurrentRound] = useState(1);
   const [selectedNpcId, setSelectedNpcId] = useState(null);
   const [voteFeedback, setVoteFeedback] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
 
@@ -45,6 +48,7 @@ export function useGameLogic() {
     setCurrentRound(1);
     setTimeLeft(null);
     setAttemptsLeft(MAX_ATTEMPTS);
+
 
     try {
       const wordsData = await fetchWordBank();
@@ -115,6 +119,23 @@ export function useGameLogic() {
     setSelectedNpcId(null);
   };
 
+  const instruction =  () => {
+  setShowInstructions(true);
+  }
+  
+  const closeInstructions = () => {
+  setShowInstructions(false);
+  };
+
+  const settings = () => {
+  setShowSettings(true);
+  }
+
+  const closeSettings = () => {
+  setShowSettings(false);
+  }
+
+
   return {
     loading,
     error,
@@ -122,7 +143,13 @@ export function useGameLogic() {
     game,
     currentRound,
     selectedNpcId,
+    showInstructions,
     voteFeedback,
+    closeInstructions,
+    settings,
+    closeSettings, 
+    showSettings,
+    instruction,
     timeLeft,
     attemptsLeft,
     startGame,

@@ -14,7 +14,13 @@ function App() {
     game,
     currentRound,
     selectedNpcId,
+    showInstructions, 
+    closeInstructions,
+    showSettings,
+    closeSettings,
+    settings,
     voteFeedback,
+    instruction,
     timeLeft,
     attemptsLeft,
     startGame,
@@ -28,6 +34,7 @@ function App() {
 
   return (
     <div className="app-container">
+      
       <h1>Find the Undercover</h1>
 
       {error && <p className="error-msg">{error}</p>}
@@ -38,6 +45,36 @@ function App() {
           <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY)} disabled={loading}>
             {loading ? 'Loading words...' : 'Start Game'}
           </button>
+
+          <div className="div-button">
+            <button className="third-button" onClick={instruction} > Instructions </button>
+          {showInstructions && (
+            <div className="popup">
+            <h2>INSTRUCTIONS</h2>
+            <p>Four NPCs receive secret words</p>
+            <p>Three share the same word, while one gets a different one. </p>
+            <p>Search for the Clues. And find the Odd one Out</p>
+            
+            <button onClick={closeInstructions}>Close</button>
+          
+          </div>
+          )}
+          
+          </div>
+          <div className="second-div-button">
+          <button className='fourth-button' onClick={settings}>Settings</button>
+          {showSettings && (
+            <div className="popup">
+            <h2>SETTINGS</h2>
+            <p>Music</p>
+            
+            
+            <button onClick={closeSettings}>Close</button>
+          
+          </div>
+          )}
+          
+          </div>
         </section>
       )}
 
