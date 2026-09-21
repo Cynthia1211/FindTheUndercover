@@ -29,7 +29,7 @@ function App() {
 
   //
   const handleSpeak = (e, clueText) => {
-    e.stopPropagation(); // 防止触发选中小人的事件
+    e.stopPropagation(); // Prevent the NPC selection event from being triggered
     playTextToSpeech(clueText).catch(() => {
       // Detailed TTS diagnostics are logged by the audio service.
     });
@@ -79,7 +79,7 @@ function App() {
                     <li key={i}>
                       {/* <strong>Clue {i + 1}:</strong> */}
                       <button onClick={(e) => handleSpeak(e, clue)} style={{ marginLeft: '8px', cursor: 'pointer' }}>
-                        🔊
+                      🔈
                       </button> {clue}</li>
                   ))}
                 </ul>

@@ -2,71 +2,83 @@ const path = require('path');
 const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
-const textToSpeech = require('@google-cloud/text-to-speech');
+const sdk = require('microsoft-cognitiveservices-speech-sdk');
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
-// 1. 核心：正确配置 CORS 允许跨域及 OPTIONS 预检请求
+const speechLanguage = process.env.AZURE_SPEECH_LANGUAGE;
+const speechVoice = process.env.AZURE_SPEECH_VOICE;
+
+// 1. Configure CORS for cross-origin requests
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// 2. 解析 JSON 请求体
+// 2. Parse JSON request bodies
 app.use(express.json());
 
-// 3. 初始化 Google TTS 客户端
-const client = new textToSpeech.TextToSpeechClient({
-  keyFilename: path.resolve(__dirname, process.env.GOOGLE_APPLICATION_CREDENTIALS),
-});
+// 3. Wrap Azure speech synthesis
+function synthesizeSpeech(text) {
+  return new Promise((resolve, reject) => {
+    const speechConfig = sdk.SpeechConfig.fromSubscription(
+      process.env.AZURE_SPEECH_KEY,
+      process.env.AZURE_SPEECH_REGION
+    );
 
-// 4. TTS 接口
+    speechConfig.speechSynthesisLanguage = speechLanguage;
+    speechConfig.speechSynthesisVoiceName = speechVoice;
+    speechConfig.speechSynthesisOutputFormat = 
+      sdk.SpeechSynthesisOutputFormat.Audio16Khz128KBitRateMonoMp3;
+
+    const synthesizer = new sdk.SpeechSynthesizer(speechConfig, null);
+
+    synthesizer.speakTextAsync(
+      text,
+      (result) => {
+        if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
+          const audioBuffer = Buffer.from(result.audioData);
+          const base64Audio = audioBuffer.toString('base64');
+          synthesizer.close();
+          resolve(base64Audio);
+        } else {
+          const errorDetails = result.errorDetails;
+          synthesizer.close();
+          reject(new Error(`Azure TTS conversion failed: ${errorDetails}`));
+        }
+      },
+      (err) => {
+        synthesizer.close();
+        reject(err);
+      }
+    );
+  });
+}
+
+// 4. TTS endpoint
 app.post('/api/tts', async (req, res) => {
   try {
-    const { text, languageCode = 'sa-IN' } = req.body;
+    const { text } = req.body;
 
-    // const request = {
-    //   input: { text: text },
-    //   voice: {
-    //     languageCode: languageCode,
-    //     name: 'en-US-Neural2-F',
-    //   },
-    //   audioConfig: { audioEncoding: 'MP3' },
-    // };
-
-    // 构造基本的 voice 请求对象
-    const voiceConfig = {
-      ssmlGender: 'FEMALE',
-    };
-
-    // 如果前端传的是 sa-IN (梵语)，映射至 hi-IN 高清神经发音模型
-    if (languageCode === 'sa-IN') {
-      voiceConfig.languageCode = 'hi-IN';
-      voiceConfig.name = 'hi-IN-Neural2-A'; 
-    } else {
-      voiceConfig.languageCode = languageCode;
+    if (!text || !text.trim()) {
+      return res.status(400).json({ error: 'Text cannot be empty' });
     }
 
-    const request = {
-      input: { text: text },
-      voice: voiceConfig,
-      audioConfig: { audioEncoding: 'MP3' },
-    };
+    if (!speechLanguage || !speechVoice) {
+      return res.status(500).json({ error: 'Azure speech configuration is missing on the server' });
+    }
 
-    const [response] = await client.synthesizeSpeech(request);
-    const audioBase64 = response.audioContent.toString('base64');
-    
+    console.log(`[Azure Speech] Generating speech with ${speechLanguage}/${speechVoice}: "${text}"`);
+    const audioBase64 = await synthesizeSpeech(text);
+
+    // Return base64 audio for the frontend audioService.js
     res.json({ audioContent: audioBase64 });
   } catch (error) {
-    console.error('=== Google TTS Error Detail ===');
-    console.error('Message:', error.message);
-    console.error('Code:', error.code);
-    console.error('Details:', JSON.stringify(error.details || error, null, 2));
-    console.error('===============================');
-    res.status(500).json({ error: 'TTS 转换失败', details: error.message });
+    console.error('=== Azure TTS Error Detail ===', error);
+    res.status(500).json({ error: 'TTS conversion failed', details: error.message });
   }
 });
 
@@ -76,7 +88,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// 防止进程意外退出
+// Prevent unexpected process termination
 server.on('error', (err) => {
   console.error('Server error:', err);
 });
