@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# Find the Undercover
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Find the Undercover is a React game where players inspect clues from NPCs and try to identify the undercover character. The project uses a React frontend and an Express backend. The backend also provides text-to-speech through Microsoft Azure Speech.
 
-## Available Scripts
+## Project structure
 
-In the project directory, you can run:
+```text
+find-the-undercover/
+├── client/       # React frontend
+│   ├── public/
+│   └── src/
+└── server/       # Express API and Azure Speech integration
+    ├── server.js
+    └── .env
+```
 
-### `npm start`
+## Requirements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Node.js and npm
+- An Azure Speech resource if text-to-speech is enabled
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Node.js 18 or newer is recommended.
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Install dependencies separately for the frontend and backend:
 
-### `npm run build`
+```bash
+cd client
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+cd ../server
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Environment variables
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create the server environment file from the example:
 
-### `npm run eject`
+```bash
+cp server/.env.example server/.env
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Then update `server/.env` with your Azure Speech credentials:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```env
+AZURE_SPEECH_KEY=your-azure-speech-key
+AZURE_SPEECH_REGION=your-azure-speech-region
+AZURE_SPEECH_LANGUAGE=hi-IN
+AZURE_SPEECH_VOICE=hi-IN-SwaraNeural
+PORT=5001
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`server/.env` contains local secrets and must not be committed to Git. The language and voice can be changed there without modifying the frontend.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Run the application
 
-## Learn More
+Start the backend in one terminal:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd server
+npm run dev
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+For a regular start without automatic restarts:
 
-### Code Splitting
+```bash
+cd server
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Start the frontend in a second terminal:
 
-### Analyzing the Bundle Size
+```bash
+cd client
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Open [http://localhost:3000](http://localhost:3000). The React development server proxies `/api` requests to the backend at `http://localhost:5001`.
 
-### Making a Progressive Web App
+## API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### `POST /api/tts`
 
-### Advanced Configuration
+Converts text to speech using the Azure settings from `server/.env`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Request body:
 
-### Deployment
+```json
+{
+  "text": "Text to synthesize"
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Response:
 
-### `npm run build` fails to minify
+```json
+{
+  "audioContent": "base64-encoded-mp3"
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Testing and production build
+
+Run the frontend tests:
+
+```bash
+cd client
+npm test -- --watchAll=false --runInBand
+```
+
+Create a production frontend build:
+
+```bash
+cd client
+npm run build
+```
+
+The generated files are placed in `client/build/` and are ignored by Git.
+
+## Troubleshooting
+
+- If the frontend cannot call `/api/tts`, make sure the server is running on port `5001`.
+- If speech synthesis fails, verify `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`, `AZURE_SPEECH_LANGUAGE`, and `AZURE_SPEECH_VOICE` in `server/.env`.
+- Restart the backend after changing `server/.env`.
