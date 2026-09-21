@@ -221,6 +221,10 @@ button:disabled {
   margin-top: 28px;
 }
 
+.game-actions button {
+  margin: 0;
+}
+
 .vote-feedback {
   margin: 22px 0 -14px;
   color: #b45309;
