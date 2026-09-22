@@ -23,6 +23,7 @@ function App() {
     instruction,
     timeLeft,
     attemptsLeft,
+    score,
     startGame,
     selectNpc,
     submitVote,
@@ -167,6 +168,7 @@ function App() {
             {difficultySelector}
             <span>Round: {currentRound} / 5</span>
             <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
+            <span>Score: {score}</span>
           </header>
 
           {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (

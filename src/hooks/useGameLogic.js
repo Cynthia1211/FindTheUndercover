@@ -18,6 +18,7 @@ export function useGameLogic() {
   
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
+  const [score, setScore] = useState(0);
 
   // Start the final-round countdown and automatically lose when it expires.
   useEffect(() => {
@@ -48,6 +49,7 @@ export function useGameLogic() {
     setCurrentRound(1);
     setTimeLeft(null);
     setAttemptsLeft(MAX_ATTEMPTS);
+    setScore(0);
 
 
     try {
@@ -97,6 +99,7 @@ export function useGameLogic() {
 
     if (targetNpc.role === 'UNDERCOVER') {
       setGameStatus('WON');
+      setScore(previousScore => previousScore + 100);
       setSelectedNpcId(null);
       setVoteFeedback(null);
       return;
@@ -147,6 +150,7 @@ export function useGameLogic() {
     instruction,
     timeLeft,
     attemptsLeft,
+    score,
     startGame,
     selectNpc,
     submitVote,
