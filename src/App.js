@@ -1,9 +1,8 @@
 // src/App.js
 import React from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
+import { useCategorySelection } from './hooks/useCategorySelection';
 import './App.css';
-
-const SELECTED_CATEGORY = 'Food';
 
 // Render the game screen and connect user actions to the game logic hook.
 function App() {
@@ -29,6 +28,30 @@ function App() {
     nextRound
   } = useGameLogic();
 
+  const {
+    categories,
+    selectedCategory: SELECTED_CATEGORY,
+    restartPopupCategory,
+    handleCategoryChange
+  } = useCategorySelection(gameStatus, startGame);
+
+  const categorySelector = (
+    <label className="category-selector">
+      <span>Category:</span>
+      <select
+        value={SELECTED_CATEGORY}
+        onChange={handleCategoryChange}
+        disabled={categories.length === 0}
+      >
+        {categories.map(category => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
   // NPC words remain hidden until the game reaches a final result.
   const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
 
@@ -38,6 +61,12 @@ function App() {
       <h1>Find the Undercover</h1>
 
       {error && <p className="error-msg">{error}</p>}
+
+      {restartPopupCategory && (
+        <div className="category-restart-popup" role="status">
+          Game restarts with category {restartPopupCategory}
+        </div>
+      )}
 
       {gameStatus === 'IDLE' && (
         <section className="welcome-panel">
@@ -81,7 +110,7 @@ function App() {
       {gameStatus !== 'IDLE' && (
         <div>
           <header className="game-header">
-            <span>Category: {game.category}</span>
+            {categorySelector}
             <span>Round: {currentRound} / 5</span>
             <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
           </header>
