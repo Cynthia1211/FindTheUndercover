@@ -54,12 +54,7 @@ export function useGameLogic() {
       const wordsData = await fetchWordBank();
       const newGameData = createGameInstance(wordsData, selectedCategory);
 
-      const initialNpcs = newGameData.npcs.map(npc => ({
-        ...npc,
-        displayedClues: [npc.allClues[0]]
-      }));
-
-      setGame({ ...newGameData, npcs: initialNpcs });
+      setGame(newGameData);
       setGameStatus('PLAYING');
     } catch (err) {
       console.error(err);

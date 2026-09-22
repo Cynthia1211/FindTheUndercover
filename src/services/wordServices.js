@@ -12,3 +12,9 @@ export async function fetchWordBank() {
     throw error;
   }
 }
+
+// Return the unique categories available in the word bank.
+export async function fetchCategories() {
+  const words = await fetchWordBank();
+  return [...new Set(words.map(word => word.category).filter(Boolean))];
+}

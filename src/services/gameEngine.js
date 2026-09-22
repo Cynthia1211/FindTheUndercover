@@ -52,19 +52,23 @@ export function createGameInstance(wordsData, selectedCategory) {
 
   const npcs = [0, 1, 2, 3].map(i => {
     const isUndercover = i === undercoverIndex;
+    const allClues = isUndercover
+      ? undercoverCluePack
+      : civilianCluePacks[civilianPackIndex++];
+
     return {
       id: i + 1,
       // name: `NPC ${ i + 1 }`,
       image: selectedNpcImages[i],
       role: isUndercover ? 'UNDERCOVER' : 'CIVILIAN',
       word: isUndercover ? undercoverObj.word : civilianObj.word,
-      allClues: isUndercover ? undercoverCluePack : civilianCluePacks[civilianPackIndex++],
-      displayedClues: [],
+      allClues,
+      displayedClues: [allClues[0]],
     };
   });
 
   return {
-    category: selectedCategory,
+    // category: selectedCategory,
     civilianWord: civilianObj.word,
     undercoverWord: undercoverObj.word,
     npcs
