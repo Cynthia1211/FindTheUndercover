@@ -3,10 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import { useCategorySelection } from './hooks/useCategorySelection';
 import { useDifficultySelection } from './hooks/useDifficultySelection';
+import { useLeaderboard } from './hooks/useLeaderboard';
+import { useAuth } from './hooks/useAuth';
+import AuthPanel from './components/auth/AuthPanel';
 import './App.css';
 
 // Render the game screen and connect user actions to the game logic hook.
 function App() {
+  const { user, signOutUser } = useAuth();
+  const [showAuth, setShowAuth] = useState(false);
+
   const {
     loading,
     error,
@@ -14,15 +20,10 @@ function App() {
     game,
     currentRound,
     selectedNpcId,
-    showInstructions, 
-    closeInstructions,
-    showSettings,
-    closeSettings,
-    settings,
     voteFeedback,
-    instruction,
     timeLeft,
     attemptsLeft,
+    score,
     startGame,
     selectNpc,
     submitVote,
@@ -42,6 +43,13 @@ function App() {
   } = useDifficultySelection();
 
   const [restartPopupMessage, setRestartPopupMessage] = useState(null);
+  const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
+  const {
+    leaderboardMessage,
+    submittingScore,
+    submitLeaderboardScore,
+    clearLeaderboardMessage
+  } = useLeaderboard(user, score);
 
   useEffect(() => {
     if (!restartPopupMessage) return undefined;
@@ -49,6 +57,14 @@ function App() {
     const timeoutId = setTimeout(() => setRestartPopupMessage(null), 3000);
     return () => clearTimeout(timeoutId);
   }, [restartPopupMessage]);
+
+  useEffect(() => {
+    if (categories.length > 0 && gameStatus === 'IDLE' && !loading) {
+      startGame(SELECTED_CATEGORY, selectedDifficulty);
+    }
+    // Start once the word categories have loaded; game controls handle later restarts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories.length]);
 
   const handleCategoryChange = event => {
     const nextCategory = event.target.value;
@@ -104,13 +120,30 @@ function App() {
     </label>
   );
 
-  // NPC words remain hidden until the game reaches a final result.
-  const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
+  const handlePlayAgain = () => {
+    clearLeaderboardMessage();
+    startGame(SELECTED_CATEGORY, selectedDifficulty);
+  };
 
   return (
     <div className="app-container">
       
-      <h1>Find the Undercover</h1>
+      <div className="top-bar">
+        <h1>Find the Undercover</h1>
+
+        <div className="account-bar">
+          {user ? (
+            <>
+              <span>Signed in as {user.displayName || user.email}</span>
+              <button className="text-button" onClick={signOutUser}>Sign out</button>
+            </>
+          ) : (
+            <button className="login-button" onClick={() => setShowAuth(true)}>Sign in</button>
+          )}
+        </div>
+      </div>
+
+      {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
 
       {error && <p className="error-msg">{error}</p>}
 
@@ -120,53 +153,16 @@ function App() {
         </div>
       )}
 
-      {gameStatus === 'IDLE' && (
-        <section className="welcome-panel">
-          <p>Can you find the undercover before the final round?</p>
+      {loading && <p className="loading-msg">Loading game...</p>}
 
-          <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY, selectedDifficulty)} disabled={loading}>
-            {loading ? 'Loading words...' : 'Start Game'}
-          </button>
-
-          <div className="div-button">
-            <button className="third-button" onClick={instruction} > Instructions </button>
-          {showInstructions && (
-            <div className="popup">
-            <h2>INSTRUCTIONS</h2>
-            <p>Four NPCs receive secret words</p>
-            <p>Three share the same word, while one gets a different one. </p>
-            <p>Search for the Clues. And find the Odd one Out</p>
-            
-            <button onClick={closeInstructions}>Close</button>
-          
-          </div>
-          )}
-          
-          </div>
-          <div className="second-div-button">
-          <button className='fourth-button' onClick={settings}>Settings</button>
-          {showSettings && (
-            <div className="popup">
-            <h2>SETTINGS</h2>
-            <p>Music</p>
-            
-            
-            <button onClick={closeSettings}>Close</button>
-          
-          </div>
-          )}
-          
-          </div>
-        </section>
-      )}
-
-      {gameStatus !== 'IDLE' && (
+      {game && (
         <div>
           <header className="game-header">
             {categorySelector}
             {difficultySelector}
             <span>Round: {currentRound} / 5</span>
             <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
+            <span>Score: {score}</span>
           </header>
 
           {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
@@ -211,7 +207,13 @@ function App() {
             <div className={`result-banner ${gameStatus}`}>
               <h2>{gameStatus === 'WON' ? '🎉 You found the undercover!' : '💥 The undercover got away!'}</h2>
               <p>Civilian word: {game.civilianWord} | Undercover word: {game.undercoverWord}</p>
-              <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY, selectedDifficulty)}>Play Again</button>
+              <div className="score-actions">
+                <button className="primary-button" onClick={handlePlayAgain}>Play Again</button>
+                <button className="secondary-button" onClick={submitLeaderboardScore} disabled={submittingScore}>
+                  {submittingScore ? 'Submitting...' : 'Submit Score'}
+                </button>
+              </div>
+              {leaderboardMessage && <p className="leaderboard-message" role="status">{leaderboardMessage}</p>}
             </div>
           )}
         </div>

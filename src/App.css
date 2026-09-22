@@ -18,6 +18,52 @@
   letter-spacing: -0.04em;
 }
 
+.top-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.top-bar .account-bar {
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
+
+.login-button {
+  padding: 9px 16px;
+  color: white;
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+}
+
+.auth-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  width: min(460px, calc(100vw - 28px));
+  padding: 28px 24px 24px;
+  transform: translate(-50%, -50%);
+  border: 1px solid #e0e7ff;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 4px 10px;
+  color: #64748b;
+  background: transparent;
+  font-size: 1.5rem;
+}
+
 /* Landing page and error message */
 .welcome-panel {
   max-width: 560px;
@@ -33,6 +79,91 @@
   margin: 0 0 30px;
   color: #64748b;
   font-size: 1.1rem;
+}
+
+.auth-panel {
+  max-width: 460px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.auth-panel h2 {
+  margin-top: 0;
+  color: #312e81;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.auth-form .primary-button {
+  margin-top: 8px;
+}
+
+.google-button {
+  width: 100%;
+  margin-top: 12px;
+  color: #1f2937;
+  background: white;
+  border: 1px solid #cbd5e1;
+}
+
+.text-button {
+  display: block;
+  margin: 12px auto 0;
+  padding: 4px 8px;
+  color: #4338ca;
+  background: transparent;
+  font-size: .9rem;
+}
+
+.success-msg {
+  color: #15803d !important;
+  font-weight: 700;
+}
+
+.account-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.loading-msg {
+  margin: 80px auto;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.game-menu {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.game-menu button {
+  margin: 0;
+}
+
+.account-bar .text-button {
+  display: inline-block;
+  margin: 0;
 }
 
 .error-msg {
@@ -280,6 +411,27 @@ button:disabled {
   color: #64748b;
 }
 
+.final-score {
+  font-weight: 800;
+}
+
+.score-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.score-actions button {
+  width: auto;
+  margin: 0;
+}
+
+.leaderboard-message {
+  margin-bottom: 0;
+  color: #4338ca !important;
+  font-weight: 700;
+}
+
 .result-banner.WON h2 {
   color: #15803d;
 }
@@ -310,5 +462,19 @@ button:disabled {
   .game-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .score-actions {
+    flex-direction: column;
+  }
+
+  .top-bar .account-bar {
+    position: static;
+    margin-top: 10px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: center;
   }
 }
