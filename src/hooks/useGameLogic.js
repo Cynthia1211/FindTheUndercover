@@ -49,7 +49,6 @@ export function useGameLogic() {
     setCurrentRound(1);
     setTimeLeft(null);
     setAttemptsLeft(MAX_ATTEMPTS);
-    setScore(0);
 
 
     try {
