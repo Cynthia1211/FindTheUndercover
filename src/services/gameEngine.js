@@ -20,7 +20,7 @@ const NPC_IMAGES = [
 ];
 
 // Create the hidden game data for the game.
-export function createGameInstance(wordsData, selectedCategory) {
+export function createGameInstance(wordsData, selectedCategory, selectedDifficulty) {
   if (!wordsData || wordsData.length === 0) {
     throw new Error("Empty Word Bank!");
   }
@@ -69,6 +69,7 @@ export function createGameInstance(wordsData, selectedCategory) {
 
   return {
     // category: selectedCategory,
+    difficulty: selectedDifficulty,
     civilianWord: civilianObj.word,
     undercoverWord: undercoverObj.word,
     npcs

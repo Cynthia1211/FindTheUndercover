@@ -40,7 +40,7 @@ export function useGameLogic() {
   }, [currentRound, gameStatus, timeLeft]);
 
   // Start a new game and reveal only the first clue for each NPC.
-  const startGame = async (selectedCategory) => {
+  const startGame = async (selectedCategory, selectedDifficulty) => {
     setLoading(true);
     setError(null);
     setSelectedNpcId(null);
@@ -52,7 +52,7 @@ export function useGameLogic() {
 
     try {
       const wordsData = await fetchWordBank();
-      const newGameData = createGameInstance(wordsData, selectedCategory);
+      const newGameData = createGameInstance(wordsData, selectedCategory, selectedDifficulty);
 
       setGame(newGameData);
       setGameStatus('PLAYING');

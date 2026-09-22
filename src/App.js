@@ -1,7 +1,8 @@
 // src/App.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import { useCategorySelection } from './hooks/useCategorySelection';
+import { useDifficultySelection } from './hooks/useDifficultySelection';
 import './App.css';
 
 // Render the game screen and connect user actions to the game logic hook.
@@ -31,9 +32,47 @@ function App() {
   const {
     categories,
     selectedCategory: SELECTED_CATEGORY,
-    restartPopupCategory,
-    handleCategoryChange
-  } = useCategorySelection(gameStatus, startGame);
+    handleCategoryChange: updateCategory
+  } = useCategorySelection();
+
+  const {
+    selectedDifficulty,
+    difficulties,
+    handleDifficultyChange: updateDifficulty
+  } = useDifficultySelection();
+
+  const [restartPopupMessage, setRestartPopupMessage] = useState(null);
+
+  useEffect(() => {
+    if (!restartPopupMessage) return undefined;
+
+    const timeoutId = setTimeout(() => setRestartPopupMessage(null), 3000);
+    return () => clearTimeout(timeoutId);
+  }, [restartPopupMessage]);
+
+  const handleCategoryChange = event => {
+    const nextCategory = event.target.value;
+    updateCategory(event);
+
+    if (gameStatus !== 'IDLE' && nextCategory !== SELECTED_CATEGORY) {
+      setRestartPopupMessage(
+        `Game restarts with category ${nextCategory} and difficulty ${selectedDifficulty}`
+      );
+      startGame(nextCategory, selectedDifficulty);
+    }
+  };
+
+  const handleDifficultyChange = event => {
+    const nextDifficulty = event.target.value;
+    updateDifficulty(event);
+
+    if (gameStatus !== 'IDLE' && nextDifficulty !== selectedDifficulty) {
+      setRestartPopupMessage(
+        `Game restarts with category ${SELECTED_CATEGORY} and difficulty ${nextDifficulty}`
+      );
+      startGame(SELECTED_CATEGORY, nextDifficulty);
+    }
+  };
 
   const categorySelector = (
     <label className="category-selector">
@@ -52,6 +91,19 @@ function App() {
     </label>
   );
 
+  const difficultySelector = (
+    <label className="category-selector difficulty-selector">
+      <span>Difficulty:</span>
+      <select value={selectedDifficulty} onChange={handleDifficultyChange}>
+        {difficulties.map(difficulty => (
+          <option key={difficulty} value={difficulty}>
+            {difficulty}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+
   // NPC words remain hidden until the game reaches a final result.
   const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
 
@@ -62,16 +114,17 @@ function App() {
 
       {error && <p className="error-msg">{error}</p>}
 
-      {restartPopupCategory && (
+      {restartPopupMessage && (
         <div className="category-restart-popup" role="status">
-          Game restarts with category {restartPopupCategory}
+          {restartPopupMessage}
         </div>
       )}
 
       {gameStatus === 'IDLE' && (
         <section className="welcome-panel">
           <p>Can you find the undercover before the final round?</p>
-          <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY)} disabled={loading}>
+
+          <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY, selectedDifficulty)} disabled={loading}>
             {loading ? 'Loading words...' : 'Start Game'}
           </button>
 
@@ -111,6 +164,7 @@ function App() {
         <div>
           <header className="game-header">
             {categorySelector}
+            {difficultySelector}
             <span>Round: {currentRound} / 5</span>
             <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
           </header>
@@ -157,7 +211,7 @@ function App() {
             <div className={`result-banner ${gameStatus}`}>
               <h2>{gameStatus === 'WON' ? '🎉 You found the undercover!' : '💥 The undercover got away!'}</h2>
               <p>Civilian word: {game.civilianWord} | Undercover word: {game.undercoverWord}</p>
-              <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY)}>Play Again</button>
+              <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY, selectedDifficulty)}>Play Again</button>
             </div>
           )}
         </div>
