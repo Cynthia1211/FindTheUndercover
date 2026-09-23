@@ -151,7 +151,7 @@ function App() {
         <div className="category-restart-popup" role="status">
           {restartPopupMessage}
         </div>
-      )}
+      )} 
 
       {loading && <p className="loading-msg">Loading game...</p>}
 

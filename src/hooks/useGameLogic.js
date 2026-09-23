@@ -31,7 +31,7 @@ export function useGameLogic() {
       setSelectedNpcId(null);
       setVoteFeedback(null);
       return undefined;
-    }
+    } 
 
     const timerId = setTimeout(() => {
       setTimeLeft(previousTime => previousTime - 1);
