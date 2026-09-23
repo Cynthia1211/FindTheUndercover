@@ -15,11 +15,16 @@ export function useGameLogic() {
   const [voteFeedback, setVoteFeedback] = useState(null);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
 
+
+  useEffect(() => 
+    { startGame('Food') }, 
+  []);
   // Start the final-round countdown and automatically lose when it expires.
   useEffect(() => {
     if (gameStatus !== 'PLAYING' || currentRound < 5 || timeLeft === null) {
@@ -31,7 +36,7 @@ export function useGameLogic() {
       setSelectedNpcId(null);
       setVoteFeedback(null);
       return undefined;
-    }
+    } 
 
     const timerId = setTimeout(() => {
       setTimeLeft(previousTime => previousTime - 1);
@@ -132,27 +137,52 @@ export function useGameLogic() {
   setShowSettings(false);
   }
 
+  const backButton = () => {
+  setGameStatus('IDLE');
+  setGame(null);
+  setSelectedNpcId(null);
+  setVoteFeedback(null);
+  setShowInstructions(false);
+  setShowSettings(false);
+};
+  const toggleMic = () => {
+  const audio = document.getElementById('UnderCoversong');
+
+  if (!audio) return;
+
+  if (isListening) {
+    audio.pause();
+    setIsListening(false);
+  } else {
+    audio.play();
+    setIsListening(true);
+  }
+};
+
 
   return {
-    loading,
-    error,
-    gameStatus,
-    game,
-    currentRound,
-    selectedNpcId,
-    showInstructions,
-    voteFeedback,
-    closeInstructions,
-    settings,
-    closeSettings, 
-    showSettings,
-    instruction,
-    timeLeft,
-    attemptsLeft,
-    score,
-    startGame,
-    selectNpc,
-    submitVote,
-    nextRound
+ loading,
+  error,
+  gameStatus,
+  game,
+  currentRound,
+  selectedNpcId,
+  showInstructions,
+  closeInstructions,
+  showSettings,
+  closeSettings,
+  toggleMic,
+  isListening,
+  settings,
+  voteFeedback,
+  instruction,
+  backButton,
+  timeLeft,
+  attemptsLeft,
+  score,
+  startGame,
+  selectNpc,
+  submitVote,
+  nextRound
   };
 }
