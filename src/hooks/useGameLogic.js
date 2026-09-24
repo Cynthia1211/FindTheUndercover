@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
@@ -16,7 +16,9 @@ export function useGameLogic() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [isAudio, setIsAudio] = useState(false);
+  const [musicError, setMusicError] = useState(null);
+  const audioRef = useRef(null);
+  const [isSfxEnabled, setIsSfxEnabled] = useState(true);
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
@@ -141,19 +143,34 @@ export function useGameLogic() {
   setShowInstructions(false);
   setShowSettings(false);
 };
-  const toggleMic = () => {
-  const audio = document.getElementById('UnderCoversong');
+  const toggleMic = async () => {
+  const audio = audioRef.current;
 
-  if (!audio) return;
+  if (!audio) {
+    setMusicError('Background music is unavailable.');
+    return;
+  }
 
   if (isListening) {
     audio.pause();
     setIsListening(false);
   } else {
-    audio.play();
-    setIsListening(true);
+    try {
+      setMusicError(null);
+      audio.volume = 0.5;
+      await audio.play();
+      setIsListening(true);
+    } catch (playError) {
+      console.error('Unable to play background music:', playError);
+      setIsListening(false);
+      setMusicError('Could not play background music. Try clicking again.');
+    }
   }
 };
+
+  const toggleSfx = () => {
+    setIsSfxEnabled(previous => !previous);
+  };
 
 
   return {
@@ -166,10 +183,17 @@ export function useGameLogic() {
     showInstructions,
     voteFeedback,
     closeInstructions,
+    backButton,
     settings,
     closeSettings, 
     showSettings,
     instruction,
+    toggleMic,
+    isListening,
+    audioRef,
+    musicError,
+    toggleSfx,
+    isSfxEnabled,
     timeLeft,
     attemptsLeft,
     score,

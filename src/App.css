@@ -31,12 +31,6 @@
   margin: 0 auto;
 }
 
-.top-bar .account-bar {
-  position: absolute;
-  top: 8px;
-  right: 0;
-}
-
 .login-button {
   padding: 9px 16px;
   color: white;
@@ -56,6 +50,46 @@
   border-radius: 20px;
   background: white;
   box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  padding: 20px;
+  place-items: center;
+  background: rgba(15, 23, 42, .42);
+}
+
+.confirm-dialog {
+  width: min(400px, 100%);
+  padding: 28px 24px;
+  border: 1px solid #e0e7ff;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+}
+
+.confirm-dialog h2 {
+  margin: 0 0 10px;
+  color: #312e81;
+}
+
+.confirm-dialog p {
+  color: #64748b;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.confirm-actions button {
+  width: auto;
+  margin: 0;
 }
 
 .modal-close {
@@ -139,13 +173,38 @@
 }
 
 .account-bar {
+  position: fixed;
+  top: 78px;
+  right: 22px;
+  z-index: 9;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  color: #64748b;
-  font-size: .9rem;
+}
+
+.account-avatar {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid white;
+  border-radius: 50%;
+  color: white;
+  background: #6366f1;
+  box-shadow: 0 4px 12px rgba(49, 46, 129, .25);
+}
+
+.account-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account-avatar span {
+  font-size: 1rem;
+  font-weight: 800;
 }
 
 .loading-msg {
@@ -162,11 +221,6 @@
 }
 
 .game-menu button {
-  margin: 0;
-}
-
-.account-bar .text-button {
-  display: inline-block;
   margin: 0;
 }
 
@@ -304,15 +358,14 @@ button:disabled {
 }
 
 .popup{
-  width: 400px;
+  width: min(400px, calc(100vw - 28px));
   background: #e0e7ff;
   border-radius: 16px;
   position: fixed;
   top:50%;
   left: 50%;
+  z-index: 11;
   transform: translate(-50%, -50%);
-
-  width: 400px;
   padding: 30px;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -324,19 +377,6 @@ button:disabled {
 }
 
 .category-restart-popup {
-  
-
-.nav-instructions{
-  background-color: #6366f1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  /* justify-content: space-between; */
-  
-  width: 100%;
-  padding: 0.55rem 1.25rem;
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -344,6 +384,22 @@ button:disabled {
   transform: translate(-50%, -50%);
   padding: 14px 22px;
   border-radius: 12px;
+  color: white;
+  background: #4338ca;
+  box-shadow: 0 10px 25px rgba(67, 56, 202, .28);
+  font-weight: 700;
+}
+
+.nav-instructions{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 14px 22px;
   color: white;
   background: #4338ca;
   box-shadow: 0 10px 25px rgba(67, 56, 202, .28);
@@ -367,22 +423,13 @@ button:disabled {
   font-weight: 700;
 }
 
-/* Game header and NPC card layout */
-  top:0;
-  left: 0;
-  z-index:100;
-}
-
 .nav-instructions button{
-
   padding: 0.5rem 0.85rem;
   font-size: 1.15rem;
-  
-
 }
 
 .app-container {
-  padding-top: 65px;
+  padding-top: 128px;
 }
 
 .instruction-button{
@@ -506,9 +553,6 @@ button:disabled {
   padding: 24px;
   border-radius: 18px;
   background: white;
-  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
-}
-
 .result-banner h2 {
   margin-top: 0;
 }
@@ -533,7 +577,7 @@ button:disabled {
 
 @media (max-width: 480px) {
   .app-container {
-    padding: 32px 14px 48px;
+    padding: 128px 14px 48px;
   }
 
   .npc-grid {
@@ -598,7 +642,12 @@ button:disabled {
 
 @media (max-width: 480px) {
   .app-container {
-    padding: 32px 14px 48px;
+    padding: 140px 14px 48px;
+  }
+
+  .account-bar {
+    top: 78px;
+    right: 14px;
   }
 
   .npc-grid {
@@ -616,11 +665,6 @@ button:disabled {
 
   .score-actions {
     flex-direction: column;
-  }
-
-  .top-bar .account-bar {
-    position: static;
-    margin-top: 10px;
   }
 
   .top-bar {
