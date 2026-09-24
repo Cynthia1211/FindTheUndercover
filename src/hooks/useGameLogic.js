@@ -23,6 +23,13 @@ export function useGameLogic() {
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
 
+  useEffect(() => {
+    if (!voteFeedback) return undefined;
+
+    const timeoutId = setTimeout(() => setVoteFeedback(null), 2000);
+    return () => clearTimeout(timeoutId);
+  }, [voteFeedback]);
+
   // Start the final-round countdown and automatically lose when it expires.
   useEffect(() => {
     if (gameStatus !== 'PLAYING' || currentRound < 5 || timeLeft === null) {

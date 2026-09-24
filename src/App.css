@@ -392,7 +392,7 @@ button:disabled {
 }
 
 .countdown {
-  margin: 0 auto 20px;
+  margin: 12px auto 20px;
   color: #b91c1c;
   font-size: 1.2rem;
   font-weight: 800;
@@ -407,7 +407,10 @@ button:disabled {
 }
 
 .npc-card {
-  min-height: 385px;
+  height: 570px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   padding: 18px 16px 20px;
   border: 3px solid transparent;
   border-radius: 22px;
@@ -510,6 +513,9 @@ button:disabled {
 }
 
 .npc-card ul {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
   margin: 0;
   padding: 12px 14px;
   border-radius: 12px;
@@ -537,8 +543,19 @@ button:disabled {
 }
 
 .vote-feedback {
-  margin: 22px 0 -14px;
-  color: #b45309;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 12;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: calc(100vw - 40px);
+  margin: 0;
+  padding: 14px 22px;
+  border-radius: 12px;
+  color: white;
+  background: #b45309;
+  box-shadow: 0 10px 25px rgba(180, 83, 9, .28);
   font-weight: 700;
 }
 
