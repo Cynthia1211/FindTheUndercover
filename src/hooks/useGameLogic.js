@@ -111,7 +111,7 @@ export function useGameLogic() {
     const remainingAttempts = attemptsLeft - 1;
     setAttemptsLeft(remainingAttempts);
 
-    if (remainingAttempts <= 0 || currentRound >= 5) {
+    if (remainingAttempts <= 0) {
       setGameStatus('LOST');
     } else {
       setVoteFeedback('That is not the undercover. Try again!');
