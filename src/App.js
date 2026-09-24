@@ -12,6 +12,7 @@ import './App.css';
 function App() {
   const { user, signOutUser } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
+  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
 
   const {
     loading,
@@ -21,6 +22,19 @@ function App() {
     currentRound,
     selectedNpcId,
     voteFeedback,
+    showInstructions,
+    closeInstructions,
+    backButton,
+    instruction,
+    settings,
+    showSettings,
+    closeSettings,
+    toggleMic,
+    isListening,
+    audioRef,
+    musicError,
+    toggleSfx,
+    isSfxEnabled,
     timeLeft,
     attemptsLeft,
     score,
@@ -127,23 +141,57 @@ function App() {
 
   return (
     <div className="app-container">
-      
+      <audio ref={audioRef} id="Undercoversong" loop>
+        <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
+      </audio>
+
+      <div className="account-bar">
+        {user ? (
+          <button
+            className="account-avatar"
+            onClick={() => setShowSignOutConfirm(true)}
+            aria-label="Account options"
+            title={`Signed in as ${user.displayName || user.email}`}
+          >
+            {user.photoURL ? (
+              <img src={user.photoURL} alt="" />
+            ) : (
+              <span>{(user.displayName || user.email || 'U').charAt(0).toUpperCase()}</span>
+            )}
+          </button>
+        ) : (
+          <button className="login-button" onClick={() => setShowAuth(true)}>Sign in</button>
+        )}
+      </div>
+
       <div className="top-bar">
         <h1>Find the Undercover</h1>
-
-        <div className="account-bar">
-          {user ? (
-            <>
-              <span>Signed in as {user.displayName || user.email}</span>
-              <button className="text-button" onClick={signOutUser}>Sign out</button>
-            </>
-          ) : (
-            <button className="login-button" onClick={() => setShowAuth(true)}>Sign in</button>
-          )}
-        </div>
       </div>
 
       {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
+
+      {showSignOutConfirm && (
+        <div className="confirm-overlay">
+          <section className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="signout-title">
+            <h2 id="signout-title">退出登录？</h2>
+            <p>确定要退出当前账号吗？</p>
+            <div className="confirm-actions">
+              <button className="secondary-button" onClick={() => setShowSignOutConfirm(false)}>
+                取消
+              </button>
+              <button
+                className="primary-button"
+                onClick={async () => {
+                  await signOutUser();
+                  setShowSignOutConfirm(false);
+                }}
+              >
+                确认退出
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       {error && <p className="error-msg">{error}</p>}
 
@@ -173,7 +221,7 @@ function App() {
 
           <div className="npc-grid">
             {game.npcs.map(npc => (
-              <div 
+              <div
                 key={npc.id}
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
                 onClick={() => selectNpc(npc.id)}
@@ -218,8 +266,63 @@ function App() {
           )}
         </div>
       )}
+
+      <nav className="nav-instructions">
+        <button className='back-button' onClick={backButton}> 🏠︎ </button>
+        <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
+        <button className='fourth-button' onClick={settings}>⚙️</button>
+      </nav>
+
+      {showInstructions && (
+        <div className="popup">
+          <h2>INSTRUCTIONS</h2>
+
+          <p>Four NPCs receive secret words</p>
+          <p>Three share the same word, while one gets a different one. </p>
+          <p>Search for the Clues. And find the Odd one Out</p>
+
+          <div className='instruction-button'>
+            <button onClick={closeInstructions}>Close</button>
+          </div>
+        </div>
+      )}
+
+
+      {showSettings && (
+        <div className="popup">
+          <h2>SETTINGS</h2>
+          <h6 className='music-settings'>
+            <span style={{ fontSize: '1.5em', color: 'black' }} >Music</span>
+
+            <button className={`mic-btn ${isListening ? 'listening' : ''}`}
+              onClick={toggleMic}> {isListening ? '🎵' : '🎵❌'}
+            </button>
+          </h6>
+          {musicError && <p className="error-msg" role="alert">{musicError}</p>}
+          <h6 className="sfx-settings">
+            <span style={{ fontSize: '1.5em', color: 'black' }} > Sound Effect</span>
+
+            <button className={`sfx-btn ${isSfxEnabled ? 'listening' : ''}`}
+              onClick={toggleSfx}
+              aria-label={isSfxEnabled ? 'Disable sound effects' : 'Enable sound effects'}>
+              {isSfxEnabled ? '🔈' : '🔇'}
+            </button>
+          </h6>
+
+
+          <div className='settingButton'>
+            <button onClick={closeSettings}>Close</button>
+
+            {/* <div className="backbtn">
+          <button className='back-button' onClick={backButton}> &lt; Main Menu </button> */}
+          </div>
+        </div>
+
+
+      )}
     </div>
   );
 }
+
 
 export default App;

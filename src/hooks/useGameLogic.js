@@ -15,7 +15,8 @@ export function useGameLogic() {
   const [voteFeedback, setVoteFeedback] = useState(null);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  
+  const [isListening, setIsListening] = useState(false);
+  const [isAudio, setIsAudio] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
@@ -131,6 +132,28 @@ export function useGameLogic() {
   const closeSettings = () => {
   setShowSettings(false);
   }
+
+  const backButton = () => {
+  setGameStatus('IDLE');
+  setGame(null);
+  setSelectedNpcId(null);
+  setVoteFeedback(null);
+  setShowInstructions(false);
+  setShowSettings(false);
+};
+  const toggleMic = () => {
+  const audio = document.getElementById('UnderCoversong');
+
+  if (!audio) return;
+
+  if (isListening) {
+    audio.pause();
+    setIsListening(false);
+  } else {
+    audio.play();
+    setIsListening(true);
+  }
+};
 
 
   return {

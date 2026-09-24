@@ -7,8 +7,12 @@
   min-height: 100vh;
   padding: 48px 24px 64px;
   color: #1f2937;
-  background: linear-gradient(135deg, #f7f3ff 0%, #eef7ff 100%);
   text-align: center;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),
+    url('./Undercoverimg.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .app-container h1 {
@@ -208,6 +212,18 @@ button:disabled {
 }
 
 .third-button{
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+ 
+  width: auto;
+  position: static;
+  top: 0;
+  margin-left: auto;
+  margin-right: 0px;
+
+}
+
+.category-button{
   color: white;
   background: #6366f1;
   box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
@@ -222,12 +238,63 @@ button:disabled {
   background: #6366f1;
   box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
   
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  
-  width: 170px;
-  margin: 20px auto 0;
+ 
+  width: auto;
+  position: static;
+  top: 0;
+  left: 50;
+  order: 2;
+
+}
+
+.music-settings{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+}
+
+.mic-btn{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  background: #f7f3ff;
+  font-size: 16px;
+  margin-top: -9px;
+
+}
+
+.sfx-settings{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+}
+
+
+.sfx-btn{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  background: #f7f3ff;
+  font-size: 16px;
+   margin-top: -9px;
+
+
+}
+
+.back-button{
+  background: #6366f1;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+ 
+  width: auto;
+  position: static;
+  /* top: 0;
+  left: 0; */
+  margin-left: 0;
+  margin-right: auto;
 
 }
 
@@ -257,6 +324,19 @@ button:disabled {
 }
 
 .category-restart-popup {
+  
+
+.nav-instructions{
+  background-color: #6366f1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  /* justify-content: space-between; */
+  
+  width: 100%;
+  padding: 0.55rem 1.25rem;
+
   position: fixed;
   top: 50%;
   left: 50%;
@@ -285,6 +365,32 @@ button:disabled {
   background: white;
   font: inherit;
   font-weight: 700;
+}
+
+/* Game header and NPC card layout */
+  top:0;
+  left: 0;
+  z-index:100;
+}
+
+.nav-instructions button{
+
+  padding: 0.5rem 0.85rem;
+  font-size: 1.15rem;
+  
+
+}
+
+.app-container {
+  padding-top: 65px;
+}
+
+.instruction-button{
+  color:#6366f1;
+  background: #f7f3ff; 
+}
+.popup h2{
+  color:black;
 }
 
 /* Game header and NPC card layout */
@@ -400,6 +506,50 @@ button:disabled {
   padding: 24px;
   border-radius: 18px;
   background: white;
+  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
+}
+
+.result-banner h2 {
+  margin-top: 0;
+}
+
+.result-banner p {
+  color: #64748b;
+}
+
+.result-banner.WON h2 {
+  color: #15803d;
+}
+
+.result-banner.LOST h2 {
+  color: #b91c1c;
+}
+
+@media (max-width: 800px) {
+  .npc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 32px 14px 48px;
+  }
+
+  .npc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-header {
+    font-size: .9rem;
+  }
+
+  .game-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
   box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
 }
 
