@@ -173,11 +173,11 @@ function App() {
       {showSignOutConfirm && (
         <div className="confirm-overlay">
           <section className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="signout-title">
-            <h2 id="signout-title">退出登录？</h2>
-            <p>确定要退出当前账号吗？</p>
+            <h2 id="signout-title">Log out?</h2>
+            <p>Are you sure you want to log out of your current account?</p>
             <div className="confirm-actions">
               <button className="secondary-button" onClick={() => setShowSignOutConfirm(false)}>
-                取消
+                Cancel
               </button>
               <button
                 className="primary-button"
@@ -186,7 +186,7 @@ function App() {
                   setShowSignOutConfirm(false);
                 }}
               >
-                确认退出
+                Confirm Logout
               </button>
             </div>
           </section>
