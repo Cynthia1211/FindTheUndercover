@@ -19,11 +19,12 @@ function App() {
     showSettings,
     closeSettings,
     toggleMic,
+    toggleAudio,
     isListening,
+    isAudio,
     settings,
     voteFeedback,
     instruction,
-    backButton,
     timeLeft,
     attemptsLeft,
     startGame,
@@ -40,21 +41,31 @@ function App() {
       <audio id= "Undercoversong" loop>
       <source src= "/Undercoversong.mp3" type="audio/mpeg"/>
       </audio>
+
+      <audio id="WrongAnswer">
+        <source src="/WrongAnswer.mp3" type="audio/wav"/>
+      </audio>
+      <audio id="CorrectAnswer">
+        <source src="/CorrectAnswer.wav" type="audio/wav"/>
+      </audio>
+      <audio id="ClockTicking">
+        <source src="/Clock Ticking.mp3" type="audio/mp3"/>
+      </audio>
+
+      <audio id="FailedGame">
+        <source src="/FailedGame.mp3" type="audio/mp3"></source>
+      </audio>
       
-      <h1>Find the Undercover</h1>
-{/* 
-      {error && <p className="error-msg">{error}</p>}
+      <h1>F
+      <span className="magnify-container">
+      <span className='base-letter'>i</span>
+      <span className="glass-emoji">🔍</span>
+        <span className="zoomed-letter">i</span>
+      </span>
+      nd the Undercover
+      </h1>
 
-      {gameStatus === 'IDLE' && (
-        <section className="welcome-panel">
-          <p>Can you find the undercover before the final round?</p>
-          <button className="primary-button" onClick={() => startGame(SELECTED_CATEGORY)} disabled={loading}>
-            {loading ? 'Loading words...' : 'Start Game'}
-          </button> */}
 
-{/* 
-        </section>
-      )} */}
             {gameStatus !== 'IDLE' && (
          <div>
 
@@ -70,6 +81,8 @@ function App() {
             <p className="countdown" role="timer">
               All clues revealed! Find the undercover in {timeLeft}s
             </p>
+
+
           )}
 
 
@@ -116,7 +129,7 @@ function App() {
       )} 
         
             <nav className="nav-instructions">
-            <button className='back-button' onClick={backButton}> 🏠︎ </button>
+            <button className='back-button' onClick={()=> window.location.href='https://zatam2.vercel.app/'}> 🏠︎ </button>
             <button className="third-button" onClick={instruction} > ℹ️</button>
             <button className='fourth-button' onClick={settings}>⚙️</button>
           </nav>
@@ -149,19 +162,17 @@ function App() {
             <h6 className="sfx-settings">
                <span style= {{ fontSize: '1.5em', color: 'black'}} > Sound Effect</span>
             
-            <button className={`sfx-btn ${isListening ? 'listening' : ''}`}
-              onClick={toggleMic}> {isListening ? '🔈' : '🔇'}
+            <button className={`sfx-btn ${isAudio ? 'listening' : ''}`}
+              onClick={toggleAudio}> {isAudio ? '🔈' : '🔇'}
             </button>
             </h6>
   
           
             <div className='settingButton'>
             <button onClick={closeSettings}>Close</button>
-
-          {/* <div className="backbtn">
-          <button className='back-button' onClick={backButton}> &lt; Main Menu </button> */}
          </div>
       </div>
+
 
 
         )}  

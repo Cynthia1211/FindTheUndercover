@@ -20,6 +20,7 @@
   color: #312e81;
   font-size: clamp(2.2rem, 5vw, 4rem);
   letter-spacing: -0.04em;
+  font-family: cursive;
 }
 
 /* Landing page and error message */
@@ -141,6 +142,7 @@ button:disabled {
   flex-direction: row;
   gap: 10px;
   padding: 10px;
+  margin-top: -30px;
 }
 
 
@@ -151,10 +153,48 @@ button:disabled {
   padding: 10px;
   background: #f7f3ff;
   font-size: 16px;
-   margin-top: -9px;
+  margin-top: -9px;
 
 
 }
+
+.magnify-container {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.18em;
+  margin-right: -0.45em;
+  margin-left: -0.1em;
+}
+
+.base-letter {
+   visibility: hidden;
+
+}
+.glass-emoji{
+  position: absolute;
+  font-size: 0.68em;
+  top: 0.15em;
+  left: -0.08em;
+  z-index: 1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.zoomed-letter{
+  position: absolute;
+  font-size: 0.68em;
+  top: 0.15em;
+  left: 0.30em;
+  /* margin-bottom: 1em; */
+  z-index: 2;
+  color: #312e81; 
+  text-decoration: underline;
+  transform: scale(1.35);
+}
+
 
 .back-button{
   background: #6366f1;
