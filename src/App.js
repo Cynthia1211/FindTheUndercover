@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import { useCategorySelection } from './hooks/useCategorySelection';
 import { useDifficultySelection } from './hooks/useDifficultySelection';
@@ -13,6 +13,8 @@ function App() {
   const { user, signOutUser } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const [playingWordId, setPlayingWordId] = useState(null);
+  const wordAudioRef = useRef(null);
 
   const {
     loading,
@@ -71,6 +73,46 @@ function App() {
     const timeoutId = setTimeout(() => setRestartPopupMessage(null), 3000);
     return () => clearTimeout(timeoutId);
   }, [restartPopupMessage]);
+
+  useEffect(() => () => wordAudioRef.current?.pause(), []);
+
+  useEffect(() => {
+    if (!isGameSettled && wordAudioRef.current) {
+      wordAudioRef.current.pause();
+      wordAudioRef.current = null;
+      setPlayingWordId(null);
+    }
+  }, [isGameSettled]);
+
+  const playWordAudio = (audioUrl, npcId) => {
+    if (!audioUrl) return;
+
+    if (playingWordId === npcId && wordAudioRef.current) {
+      wordAudioRef.current.pause();
+      wordAudioRef.current = null;
+      setPlayingWordId(null);
+      return;
+    }
+
+    wordAudioRef.current?.pause();
+    const player = new Audio(audioUrl);
+    wordAudioRef.current = player;
+    setPlayingWordId(npcId);
+
+    const clearPlayer = () => {
+      if (wordAudioRef.current === player) {
+        wordAudioRef.current = null;
+        setPlayingWordId(null);
+      }
+    };
+
+    player.addEventListener('ended', clearPlayer, { once: true });
+    player.addEventListener('error', clearPlayer, { once: true });
+    player.play().catch(error => {
+      console.error('Unable to play word audio:', error);
+      clearPlayer();
+    });
+  };
 
   useEffect(() => {
     if (categories.length > 0 && gameStatus === 'IDLE' && !loading) {
@@ -226,9 +268,38 @@ function App() {
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
                 onClick={() => selectNpc(npc.id)}
               >
-                <div className="word-label">{isGameSettled ? npc.word : '???'}</div>
-                <img className="npc-image" src={npc.image} alt={`${npc.name} avatar`} />
-                {/* <h2>{npc.name}</h2> */}
+                <div className={`word-card ${isGameSettled ? 'revealed' : 'masked'}`}>
+                  {isGameSettled ? (
+                    <>
+                      {npc.wordImage ? (
+                        <img className="word-card-image" src={npc.wordImage} alt={`Illustration for ${npc.wordSan}`} />
+                      ) : (
+                        <div className="word-card-image-placeholder" aria-label={`No image available for ${npc.wordSan}`}>
+                          🖼️
+                        </div>
+                      )}
+                      <div className="word-card-footer">
+                        <span className="word-card-word">{npc.wordSan}</span>
+                        <button
+                          type="button"
+                          className="word-audio-button"
+                          onClick={event => {
+                            event.stopPropagation();
+                            playWordAudio(npc.wordAudio, npc.id);
+                          }}
+                          disabled={!npc.wordAudio}
+                          aria-label={playingWordId === npc.id ? `Stop audio for ${npc.wordSan}` : `Play audio for ${npc.wordSan}`}
+                          title={npc.wordAudio ? 'Play pronunciation' : 'Audio unavailable'}
+                        >
+                          {playingWordId === npc.id ? '⏸️' : '🔊'}
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <span className="word-card-mask" aria-label="Word hidden">???</span>
+                  )}
+                </div>
+                <img className="npc-image" src={npc.image} alt={`NPC ${npc.id}`} />
                 <ul>
                   {npc.displayedClues.map((clue, i) => (
                     <li key={i}><strong>Clue {i + 1}:</strong> {clue}</li>

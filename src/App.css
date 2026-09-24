@@ -424,15 +424,73 @@ button:disabled {
   box-shadow: 0 18px 34px rgba(99, 102, 241, .22);
 }
 
-.word-label {
-  display: inline-block;
-  margin-bottom: 4px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  color: #3730a3;
+.word-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: min(100%, 180px);
+  aspect-ratio: 1;
+  margin: 0 auto 10px;
+  padding: 10px;
+  overflow: hidden;
+  border: 2px solid #c7d2fe;
+  border-radius: 18px;
   background: #eef2ff;
-  font-size: 1.05rem;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, .14);
+}
+
+.word-card.masked {
+  align-items: center;
+  justify-content: center;
+  color: #4338ca;
+  font-size: 2rem;
   font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.word-card-image,
+.word-card-image-placeholder {
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  object-fit: contain;
+}
+
+.word-card-image-placeholder {
+  display: grid;
+  place-items: center;
+  color: #818cf8;
+  font-size: 2rem;
+}
+
+.word-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 38px;
+}
+
+.word-card-word {
+  overflow: hidden;
+  color: #3730a3;
+  font-size: 1rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.word-audio-button {
+  display: grid;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border-radius: 50%;
+  color: #4338ca;
+  background: white;
+  font-size: 1rem;
 }
 
 /* NPC avatar image */
