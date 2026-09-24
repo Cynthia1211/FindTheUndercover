@@ -101,7 +101,8 @@ export function useGameLogic() {
 
     if (targetNpc.role === 'UNDERCOVER') {
       setGameStatus('WON');
-      setScore(previousScore => previousScore + 100);
+      const points = game.difficulty === 'Advanced' ? 200 : 100;
+      setScore(previousScore => previousScore + points);
       setSelectedNpcId(null);
       setVoteFeedback(null);
       return;

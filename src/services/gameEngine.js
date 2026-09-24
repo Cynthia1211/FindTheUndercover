@@ -36,14 +36,24 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
   const remainingWords = categoryWords.filter((_, index) => index !== civilianIndex);
   const undercoverObj = remainingWords[Math.floor(Math.random() * remainingWords.length)];
 
+  // Use Sanskrit clues for Advanced and English clues for Easy.
+  const cluesFor = wordData => {
+    const preferredClues = selectedDifficulty === 'Advanced'
+      ? wordData['clues-san']
+      : wordData.clues;
+    return Array.isArray(preferredClues) && preferredClues.length > 0
+      ? preferredClues
+      : wordData.clues || [];
+  };
+
   // Divide civilian clues into separate packs so NPCs do not all have the same clues.
-  const shuffledCivilianClues = shuffle(civilianObj.clues);
+  const shuffledCivilianClues = shuffle(cluesFor(civilianObj));
   const civilianCluePacks = [
     shuffledCivilianClues.slice(0, 5),
     shuffledCivilianClues.slice(5, 10),
     shuffledCivilianClues.slice(10, 15)
   ];
-  const undercoverCluePack = shuffle(undercoverObj.clues).slice(0, 5);
+  const undercoverCluePack = shuffle(cluesFor(undercoverObj)).slice(0, 5);
 
   // Randomly assign the undercover role to one of the four NPCs.
   const undercoverIndex = Math.floor(Math.random() * 4);
@@ -52,6 +62,7 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
 
   const npcs = [0, 1, 2, 3].map(i => {
     const isUndercover = i === undercoverIndex;
+    const wordData = isUndercover ? undercoverObj : civilianObj;
     const allClues = isUndercover
       ? undercoverCluePack
       : civilianCluePacks[civilianPackIndex++];
@@ -61,7 +72,10 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
       // name: `NPC ${ i + 1 }`,
       image: selectedNpcImages[i],
       role: isUndercover ? 'UNDERCOVER' : 'CIVILIAN',
-      word: isUndercover ? undercoverObj.word : civilianObj.word,
+      word: wordData.word,
+      wordSan: wordData['word-san'],
+      wordImage: wordData.img,
+      wordAudio: wordData.audio,
       allClues,
       displayedClues: [allClues[0]],
     };
