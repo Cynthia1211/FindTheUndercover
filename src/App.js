@@ -255,12 +255,6 @@ function App() {
             <span>Score: {score}</span>
           </header>
 
-          {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
-            <p className="countdown" role="timer">
-              All clues revealed! Find the undercover in {timeLeft}s
-            </p>
-          )}
-
           <div className="npc-grid">
             {game.npcs.map(npc => (
               <div
@@ -320,6 +314,12 @@ function App() {
                 {currentRound >= 5 ? 'Final Round' : 'More Clues'}
               </button>
             </div>
+          )}
+
+          {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
+            <p className="countdown" role="timer">
+              All clues revealed! Find the undercover in {timeLeft}s
+            </p>
           )}
 
           {(gameStatus === 'WON' || gameStatus === 'LOST') && (
