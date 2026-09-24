@@ -281,9 +281,7 @@ function App() {
           <p>Three share the same word, while one gets a different one. </p>
           <p>Search for the Clues. And find the Odd one Out</p>
 
-          <div className='instruction-button'>
-            <button onClick={closeInstructions}>Close</button>
-          </div>
+          <button className="instruction-button" onClick={closeInstructions}>Close</button>
         </div>
       )}
 
@@ -310,12 +308,7 @@ function App() {
           </h6>
 
 
-          <div className='settingButton'>
-            <button onClick={closeSettings}>Close</button>
-
-            {/* <div className="backbtn">
-          <button className='back-button' onClick={backButton}> &lt; Main Menu </button> */}
-          </div>
+          <button onClick={closeSettings}>Close</button>
         </div>
 
 
