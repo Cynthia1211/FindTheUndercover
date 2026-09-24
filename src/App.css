@@ -7,8 +7,12 @@
   min-height: 100vh;
   padding: 48px 24px 64px;
   color: #1f2937;
-  background: linear-gradient(135deg, #f7f3ff 0%, #eef7ff 100%);
   text-align: center;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),
+    url('./Undercoverimg.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .app-container h1 {
@@ -83,6 +87,9 @@ button:disabled {
   width: auto;
   position: static;
   top: 0;
+  margin-left: auto;
+  margin-right: 0px;
+
 }
 
 .category-button{
@@ -101,11 +108,14 @@ button:disabled {
 .fourth-button{
   background: #6366f1;
   box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  
  
   width: auto;
   position: static;
   top: 0;
-  left: 0;
+  left: 50;
+  order: 2;
+
 }
 
 .music-settings{
@@ -126,14 +136,37 @@ button:disabled {
 
 }
 
+.sfx-settings{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+}
+
+
+.sfx-btn{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  background: #f7f3ff;
+  font-size: 16px;
+   margin-top: -9px;
+
+
+}
+
 .back-button{
   background: #6366f1;
   box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
  
   width: auto;
   position: static;
-  top: 0;
-  left: 0;
+  /* top: 0;
+  left: 0; */
+  margin-left: 0;
+  margin-right: auto;
+
 }
 
 .div-button{
@@ -162,10 +195,12 @@ button:disabled {
   background-color: #6366f1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 6px;
 
+  /* justify-content: space-between; */
+  
   width: 100%;
-  padding: 0.25rem 1rem;
+  padding: 0.55rem 1.25rem;
 
   position: fixed;
   top:0;
@@ -175,111 +210,10 @@ button:disabled {
 
 .nav-instructions button{
 
-  padding: 0.35rem 0.75rem;
-  font-size: 1rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 1.15rem;
   
 
-}
-
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: 55px auto 35px;
-  padding: 25px 32px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 24px;
-  color: #4338ca;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.npc-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.npc-card {
-  background: white;
-  border-radius: 28px;
-  padding: 30px 26px;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(49, 46, 129, 0.08);
-}
-
-.npc-card.active {
-  outline: 4px solid #6366f1;
-}
-
-.word-label {
-  background: #eef2ff;
-  color: #3730a3;
-  font-size: 1.2rem;
-  font-weight: 800;
-  padding: 12px 20px;
-  border-radius: 999px;
-  margin-bottom: 12px;
-}
-
-.npc-image {
-  width: 180px;
-  height: 210px;
-  object-fit: contain;
-  margin: 10px auto 15px;
-}
-
-.npc-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  text-align: left;
-}
-
-.npc-card li {
-  background: #f8fafc;
-  padding: 20px;
-  margin-top: 10px;
-  border-radius: 18px;
-  color: #334155;
-  font-size: 1rem;
-  line-height: 1.45;
-}
-
-.game-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 28px;
-}
-
-.countdown {
-  margin: 20px auto;
-  color: #4338ca;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.vote-feedback {
-  margin-top: 20px;
-  font-weight: 700;
-}
-
-.result-banner {
-  max-width: 700px;
-  margin: 30px auto 0;
-  padding: 30px;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(49, 46, 129, 0.1);
 }
 
 .app-container {
@@ -292,4 +226,161 @@ button:disabled {
 }
 .popup h2{
   color:black;
+}
+
+/* Game header and NPC card layout */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1180px;
+  margin: 32px auto 24px;
+  padding: 16px 22px;
+  border-radius: 16px;
+  color: #4338ca;
+  background: rgba(255, 255, 255, .78);
+  font-weight: 700;
+}
+
+.countdown {
+  margin: 0 auto 20px;
+  color: #b91c1c;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.npc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.npc-card {
+  min-height: 385px;
+  padding: 18px 16px 20px;
+  border: 3px solid transparent;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.npc-card:hover,
+.npc-card.active {
+  transform: translateY(-5px);
+  border-color: #818cf8;
+  box-shadow: 0 18px 34px rgba(99, 102, 241, .22);
+}
+
+.word-label {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: #3730a3;
+  background: #eef2ff;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* NPC avatar image */
+.npc-image {
+  display: block;
+  width: 116px;
+  height: 142px;
+  margin: 10px auto 4px;
+  object-fit: contain;
+}
+
+/* Clues and game controls */
+.npc-card h2 {
+  margin: 4px 0 12px;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.npc-card ul {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #475569;
+  background: #f8fafc;
+  text-align: left;
+  list-style: none;
+}
+
+.npc-card li {
+  padding: 5px 0;
+  font-size: .9rem;
+  line-height: 1.45;
+}
+
+.game-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.game-actions button {
+  margin: 0;
+}
+
+.vote-feedback {
+  margin: 22px 0 -14px;
+  color: #b45309;
+  font-weight: 700;
+}
+
+/* Final game result */
+.result-banner {
+  max-width: 600px;
+  margin: 30px auto 0;
+  padding: 24px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 14px 30px rgba(71, 85, 105, .12);
+}
+
+.result-banner h2 {
+  margin-top: 0;
+}
+
+.result-banner p {
+  color: #64748b;
+}
+
+.result-banner.WON h2 {
+  color: #15803d;
+}
+
+.result-banner.LOST h2 {
+  color: #b91c1c;
+}
+
+@media (max-width: 800px) {
+  .npc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 32px 14px 48px;
+  }
+
+  .npc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .game-header {
+    font-size: .9rem;
+  }
+
+  .game-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

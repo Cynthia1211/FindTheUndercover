@@ -16,7 +16,7 @@ export function useGameLogic() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  
+  const [isAudio, setIsAudio] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
@@ -146,18 +146,20 @@ export function useGameLogic() {
   setShowSettings(false);
 };
   const toggleMic = () => {
-  const audio = document.getElementById('UnderCoversong');
+  const music = document.getElementById('Undercoversong');
 
-  if (!audio) return;
+  if (!music) return;
 
   if (isListening) {
-    audio.pause();
+    music.pause();
     setIsListening(false);
   } else {
-    audio.play();
+    music.play();
     setIsListening(true);
   }
 };
+
+const audio = document.getElementById('')
 
 
   return {

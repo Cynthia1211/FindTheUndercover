@@ -37,8 +37,8 @@ function App() {
 
   return (
     <div className="app-container">
-      <audio id= "UnderCoversong" loop>
-      <source src= "/UnderCoversong.mp3.mp3" type="audio/mpeg"/>
+      <audio id= "Undercoversong" loop>
+      <source src= "/Undercoversong.mp3" type="audio/mpeg"/>
       </audio>
       
       <h1>Find the Undercover</h1>
@@ -117,7 +117,7 @@ function App() {
         
             <nav className="nav-instructions">
             <button className='back-button' onClick={backButton}> 🏠︎ </button>
-            <button className="third-button" onClick={instruction} > Instructions </button>
+            <button className="third-button" onClick={instruction} > ℹ️</button>
             <button className='fourth-button' onClick={settings}>⚙️</button>
           </nav>
 
@@ -143,24 +143,31 @@ function App() {
               <span style= {{ fontSize: '1.5em', color:'black' }} >Music</span>
 
               <button className={`mic-btn ${isListening ? 'listening' : ''}`}
-              onClick={toggleMic}> {isListening ? '🔊' : '🔇'}
+              onClick={toggleMic}> {isListening ? '🎵' : '🎵❌'}
             </button>
             </h6>
-
+            <h6 className="sfx-settings">
+               <span style= {{ fontSize: '1.5em', color: 'black'}} > Sound Effect</span>
+            
+            <button className={`sfx-btn ${isListening ? 'listening' : ''}`}
+              onClick={toggleMic}> {isListening ? '🔈' : '🔇'}
+            </button>
+            </h6>
+  
           
             <div className='settingButton'>
             <button onClick={closeSettings}>Close</button>
-          </div>
-          <div className="backbtn">
-          <button className='back-button' onClick={backButton}> &lt; Main Menu </button>
+
+          {/* <div className="backbtn">
+          <button className='back-button' onClick={backButton}> &lt; Main Menu </button> */}
          </div>
-          </div>
+      </div>
 
 
         )}  
       </div>
-      );
-    }
+  );
+}
       
 
 export default App;
