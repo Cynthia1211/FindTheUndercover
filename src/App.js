@@ -25,6 +25,7 @@ function App() {
     selectedNpcId,
     voteFeedback,
     showInstructions,
+    startClockTicking,
     closeInstructions,
     backButton,
     instruction,
@@ -187,6 +188,21 @@ function App() {
         <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
       </audio>
 
+      <audio id="CorrectAnswer">
+        <source src={`${process.env.PUBLIC_URL}/CorrectAnswer.wav`} type="audio/wav" />
+      </audio>
+
+      <audio id="FailedGame">
+        <source src={`${process.env.PUBLIC_URL}/FailedGame.mp3`} type="audio/mpeg" />
+      </audio>
+      <audio id="ClockTicking">
+        <source src={`${process.env.PUBLIC_URL}/ClockTicking.mp3`} type="audio/mpeg" />
+      </audio>
+
+      <audio id="WrongAnswer">
+        <source src={`${process.env.PUBLIC_URL}/WrongAnswer.mp3`} type="audio/mpeg" />
+      </audio>
+  
       <div className="account-bar">
         {user ? (
           <button
@@ -319,6 +335,7 @@ function App() {
           {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
             <p className="countdown" role="timer">
               All clues revealed! Find the undercover in {timeLeft}s
+            
             </p>
           )}
 
