@@ -25,7 +25,6 @@ function App() {
     selectedNpcId,
     voteFeedback,
     showInstructions,
-    startClockTicking,
     closeInstructions,
     backButton,
     instruction,
@@ -223,7 +222,14 @@ function App() {
       </div>
 
       <div className="top-bar">
-        <h1>Find the Undercover</h1>
+       <h1>F
+      <span className="magnify-container">
+      <span className='base-letter'>i</span>
+      <span className="glass-emoji">🔍</span>
+        <span className="zoomed-letter">i</span>
+      </span>
+      nd the Undercover
+      </h1>
       </div>
 
       {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
