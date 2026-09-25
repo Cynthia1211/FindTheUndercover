@@ -30,11 +30,16 @@ function App() {
     showSettings,
     closeSettings,
     toggleMic,
+    toggleAudio,
     isListening,
     audioRef,
     musicError,
     toggleSfx,
     isSfxEnabled,
+    isAudio,
+    settings,
+    voteFeedback,
+    instruction,
     timeLeft,
     attemptsLeft,
     score,
@@ -202,6 +207,32 @@ function App() {
       )}
 
       {loading && <p className="loading-msg">Loading game...</p>}
+      <audio id="WrongAnswer">
+        <source src="/WrongAnswer.mp3" type="audio/wav"/>
+      </audio>
+      <audio id="CorrectAnswer">
+        <source src="/CorrectAnswer.wav" type="audio/wav"/>
+      </audio>
+      <audio id="ClockTicking">
+        <source src="/Clock Ticking.mp3" type="audio/mp3"/>
+      </audio>
+
+      <audio id="FailedGame">
+        <source src="/FailedGame.mp3" type="audio/mp3"></source>
+      </audio>
+      
+      <h1>F
+      <span className="magnify-container">
+      <span className='base-letter'>i</span>
+      <span className="glass-emoji">🔍</span>
+        <span className="zoomed-letter">i</span>
+      </span>
+      nd the Undercover
+      </h1>
+
+
+            {gameStatus !== 'IDLE' && (
+         <div>
 
       {game && (
         <div>
@@ -217,6 +248,8 @@ function App() {
             <p className="countdown" role="timer">
               All clues revealed! Find the undercover in {timeLeft}s
             </p>
+
+
           )}
 
           <div className="npc-grid">
@@ -280,6 +313,28 @@ function App() {
           <p>Four NPCs receive secret words</p>
           <p>Three share the same word, while one gets a different one. </p>
           <p>Search for the Clues. And find the Odd one Out</p>
+                 </div>
+      )} 
+        
+            <nav className="nav-instructions">
+            <button className='back-button' onClick={()=> window.location.href='https://zatam2.vercel.app/'}> 🏠︎ </button>
+            <button className="third-button" onClick={instruction} > ℹ️</button>
+            <button className='fourth-button' onClick={settings}>⚙️</button>
+          </nav>
+
+          {showInstructions && (
+            <div className="popup">
+            <h2>INSTRUCTIONS</h2>
+
+            <p>Four NPCs receive secret words</p>
+            <p>Three share the same word, while one gets a different one. </p>
+            <p>Search for the Clues. And find the Odd one Out</p>
+            
+            <div className='instruction-button'>
+            <button onClick={closeInstructions}>Close</button>         
+          </div>
+          </div>
+          )}     
 
           <button className="instruction-button" onClick={closeInstructions}>Close</button>
         </div>
@@ -314,6 +369,25 @@ function App() {
 
       )}
     </div>
+            </h6>
+            <h6 className="sfx-settings">
+               <span style= {{ fontSize: '1.5em', color: 'black'}} > Sound Effect</span>
+            
+            <button className={`sfx-btn ${isAudio ? 'listening' : ''}`}
+              onClick={toggleAudio}> {isAudio ? '🔈' : '🔇'}
+            </button>
+            </h6>
+  
+          
+            <div className='settingButton'>
+            <button onClick={closeSettings}>Close</button>
+         </div>
+      </div>
+
+
+
+        )}  
+      </div>
   );
 }
 

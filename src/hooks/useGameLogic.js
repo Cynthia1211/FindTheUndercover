@@ -19,6 +19,7 @@ export function useGameLogic() {
   const [musicError, setMusicError] = useState(null);
   const audioRef = useRef(null);
   const [isSfxEnabled, setIsSfxEnabled] = useState(true);
+  const [isAudio, setIsAudio] = useState(true);
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
@@ -79,7 +80,6 @@ export function useGameLogic() {
   // Reveal one additional clue for every NPC.
   const nextRound = () => {
     if (!game || gameStatus !== 'PLAYING' || currentRound >= 5) return;
-
     const nextRoundNumber = currentRound + 1;
     const npcsWithNewClues = game.npcs.map(npc => ({
       ...npc,
@@ -90,7 +90,15 @@ export function useGameLogic() {
     setGame({ ...game, npcs: npcsWithNewClues });
     setSelectedNpcId(null);
     setVoteFeedback(null);
-    setTimeLeft(nextRoundNumber === 5 ? 60 : null);
+    
+    if (nextRoundNumber === 5) {
+      setTimeLeft(60);
+      playSound("ClockTicking");
+    }else{
+      setTimeLeft(null);
+    }
+
+
   };
 
   // Check the selected NPC and either end the game or provide feedback.
@@ -100,6 +108,7 @@ export function useGameLogic() {
     const targetNpc = game.npcs.find(n => n.id === selectedNpcId);
 
     if (targetNpc.role === 'UNDERCOVER') {
+      playSound("CorrectAnswer")
       setGameStatus('WON');
       setScore(previousScore => previousScore + 100);
       setSelectedNpcId(null);
@@ -111,8 +120,10 @@ export function useGameLogic() {
     setAttemptsLeft(remainingAttempts);
 
     if (remainingAttempts <= 0 || currentRound >= 5) {
+      playSound("FailedGame")
       setGameStatus('LOST');
     } else {
+      playSound("WrongAnswer")
       setVoteFeedback('That is not the undercover. Try again!');
     }
 
@@ -145,6 +156,16 @@ export function useGameLogic() {
 };
   const toggleMic = async () => {
   const audio = audioRef.current;
+//   const backButton = () => {
+//   setGameStatus('IDLE');
+//   setGame(null);
+//   setSelectedNpcId(null);
+//   setVoteFeedback(null);
+//   setShowInstructions(false);
+//   setShowSettings(false);
+// };
+  const toggleMic = () => {
+  const music = document.getElementById('Undercoversong');
 
   if (!audio) {
     setMusicError('Background music is unavailable.');
@@ -201,5 +222,41 @@ export function useGameLogic() {
     selectNpc,
     submitVote,
     nextRound
+const toggleAudio = () => {
+  setIsAudio(!isAudio);
+};
+const playSound = (id) => {
+  if (isAudio){
+    document.getElementById(id).play()
+  }
+};
+
+
+  return {
+ loading,
+  error,
+  gameStatus,
+  game,
+  currentRound,
+  selectedNpcId,
+  showInstructions,
+  closeInstructions,
+  showSettings,
+  closeSettings,
+  toggleAudio,
+  toggleMic,
+  isListening,
+  isAudio,
+  settings,
+  voteFeedback,
+  instruction,
+  timeLeft,
+  attemptsLeft,
+  score,
+  startGame,
+  selectNpc,
+  submitVote,
+  nextRound
   };
 }
+
