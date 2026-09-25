@@ -339,7 +339,7 @@ function App() {
       )}
 
       <nav className="nav-instructions">
-        <button className='back-button' onClick={backButton}> 🏠︎ </button>
+        <button className='back-button' onClick={()=> window.location.href='https://zatam2.vercel.app/'}> 🏠︎ </button>
         <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
         <button className='fourth-button' onClick={settings}>⚙️</button>
       </nav>
