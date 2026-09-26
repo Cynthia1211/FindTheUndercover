@@ -40,7 +40,10 @@ export function useGameLogic() {
       setGameStatus('LOST');
       setSelectedNpcId(null);
       setVoteFeedback(null);
+      playSfx("FailedGame");
+      
       return undefined;
+
     }
 
     const timerId = setTimeout(() => {
@@ -97,7 +100,13 @@ export function useGameLogic() {
     setGame({ ...game, npcs: npcsWithNewClues });
     setSelectedNpcId(null);
     setVoteFeedback(null);
-    setTimeLeft(nextRoundNumber === 5 ? 60 : null);
+
+    if (nextRoundNumber === 5) {
+      setTimeLeft(60);
+      playSfx("ClockTicking");
+    }else{
+      setTimeLeft(null);
+    }
   };
 
   // Check the selected NPC and either end the game or provide feedback.
@@ -108,6 +117,11 @@ export function useGameLogic() {
 
     if (targetNpc.role === 'UNDERCOVER') {
       setGameStatus('WON');
+
+      document.getElementById("ClockTicking")?.pause();
+
+
+      playSfx("CorrectAnswer");
       const points = game.difficulty === 'Advanced' ? 200 : 100;
       setScore(previousScore => previousScore + points);
       setSelectedNpcId(null);
@@ -120,8 +134,13 @@ export function useGameLogic() {
 
     if (remainingAttempts <= 0) {
       setGameStatus('LOST');
+      playSfx("FailedGame");
+      document.getElementById("ClockTicking")?.pause();
+
+
     } else {
       setVoteFeedback('That is not the undercover. Try again!');
+      playSfx("WrongAnswer");
     }
 
     setSelectedNpcId(null);
@@ -180,6 +199,11 @@ export function useGameLogic() {
     setIsSfxEnabled(previous => !previous);
   };
 
+  const playSfx = (sound) => {
+    if (isSfxEnabled){
+      document.getElementById(sound)?.play();
+    }
+  };
 
   return {
     loading,

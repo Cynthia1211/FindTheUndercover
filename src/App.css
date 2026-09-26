@@ -15,11 +15,14 @@
   background-position: center;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 .app-container h1 {
   margin: 0;
   color: #312e81;
   font-size: clamp(2.2rem, 5vw, 4rem);
-  letter-spacing: -0.04em;
+  letter-spacing: 0.04em;
+  font-family: 'Lobster', cursive;
+
 }
 
 .top-bar {
@@ -291,9 +294,45 @@ button:disabled {
   padding: 10px;
   background: #f7f3ff;
   font-size: 16px;
-   margin-top: -9px;
+  margin-top: -9px;
 
 
+}
+
+.magnify-container {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.18em;
+  margin-right: -0.45em;
+  margin-left: -0.1em;
+}
+
+.base-letter {
+   visibility: hidden;
+
+}
+.glass-emoji{
+  position: absolute;
+  font-size: 0.68em;
+  top: 0.15em;
+  left: -0.08em;
+  z-index: 1;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.zoomed-letter{
+  position: absolute;
+  font-size: 0.68em;
+  top: 0.15em;
+  left: 0.30em;
+  margin-bottom: 1em;
+  z-index: 2;
+  color: #312e81; 
+  transform: scale(1.35);
 }
 
 .back-button{
@@ -302,8 +341,8 @@ button:disabled {
  
   width: auto;
   position: static;
-  /* top: 0;
-  left: 0; */
+  top: 0;
+  left: 0;
   margin-left: 0;
   margin-right: auto;
 

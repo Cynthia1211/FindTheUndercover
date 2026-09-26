@@ -187,6 +187,21 @@ function App() {
         <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
       </audio>
 
+      <audio id="CorrectAnswer">
+        <source src={`${process.env.PUBLIC_URL}/CorrectAnswer.wav`} type="audio/wav" />
+      </audio>
+
+      <audio id="FailedGame">
+        <source src={`${process.env.PUBLIC_URL}/FailedGame.mp3`} type="audio/mpeg" />
+      </audio>
+      <audio id="ClockTicking">
+        <source src={`${process.env.PUBLIC_URL}/ClockTicking.mp3`} type="audio/mpeg" />
+      </audio>
+
+      <audio id="WrongAnswer">
+        <source src={`${process.env.PUBLIC_URL}/WrongAnswer.mp3`} type="audio/mpeg" />
+      </audio>
+  
       <div className="account-bar">
         {user ? (
           <button
@@ -207,7 +222,14 @@ function App() {
       </div>
 
       <div className="top-bar">
-        <h1>Find the Undercover</h1>
+       <h1>F
+      <span className="magnify-container">
+      <span className='base-letter'>i</span>
+      <span className="glass-emoji">🔍</span>
+        <span className="zoomed-letter">i</span>
+      </span>
+      nd the Undercover
+      </h1>
       </div>
 
       {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
@@ -319,6 +341,7 @@ function App() {
           {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
             <p className="countdown" role="timer">
               All clues revealed! Find the undercover in {timeLeft}s
+            
             </p>
           )}
 
