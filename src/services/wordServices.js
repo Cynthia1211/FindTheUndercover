@@ -1,16 +1,16 @@
+import { collection, getDocs } from 'firebase/firestore';
+import { wordsDb } from '../wordBank-config';
+
 // Load the word bank used to create new game instances.
 export async function fetchWordBank() {
   try {
-    // Use a relative URL so the game also works from a nested folder such as
-    // /games/findtheundercover/ after the production build is copied there.
-    const response = await fetch('./data/words.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
+    const snapshot = await getDocs(collection(wordsDb, 'words'));
+    return snapshot.docs.map(wordDocument => ({
+      id: wordDocument.id,
+      ...wordDocument.data()
+    }));
   } catch (error) {
-    console.error("Faild to get words:", error);
+    console.error('Failed to get words from Firestore:', error);
     throw error;
   }
 }
