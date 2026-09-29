@@ -6,13 +6,14 @@ import { useDifficultySelection } from './hooks/useDifficultySelection';
 import { useLeaderboard } from './hooks/useLeaderboard';
 import { useAuth } from './hooks/useAuth';
 import AuthPanel from './components/auth/AuthPanel';
+import AccountControls from './components/account/AccountControls';
+import GameAudio from './components/game/GameAudio';
 import './App.css';
 
 // Render the game screen and connect user actions to the game logic hook.
 function App() {
   const { user, signOutUser } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
-  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [playingWordId, setPlayingWordId] = useState(null);
   const wordAudioRef = useRef(null);
 
@@ -26,7 +27,6 @@ function App() {
     voteFeedback,
     showInstructions,
     closeInstructions,
-    backButton,
     instruction,
     settings,
     showSettings,
@@ -183,43 +183,9 @@ function App() {
 
   return (
     <div className="app-container">
-      <audio ref={audioRef} id="Undercoversong" loop>
-        <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
-      </audio>
-
-      <audio id="CorrectAnswer">
-        <source src={`${process.env.PUBLIC_URL}/CorrectAnswer.wav`} type="audio/wav" />
-      </audio>
-
-      <audio id="FailedGame">
-        <source src={`${process.env.PUBLIC_URL}/FailedGame.mp3`} type="audio/mpeg" />
-      </audio>
-      <audio id="ClockTicking">
-        <source src={`${process.env.PUBLIC_URL}/ClockTicking.mp3`} type="audio/mpeg" />
-      </audio>
-
-      <audio id="WrongAnswer">
-        <source src={`${process.env.PUBLIC_URL}/WrongAnswer.mp3`} type="audio/mpeg" />
-      </audio>
+      <GameAudio audioRef={audioRef} />
   
-      <div className="account-bar">
-        {user ? (
-          <button
-            className="account-avatar"
-            onClick={() => setShowSignOutConfirm(true)}
-            aria-label="Account options"
-            title={`Signed in as ${user.displayName || user.email}`}
-          >
-            {user.photoURL ? (
-              <img src={user.photoURL} alt="" />
-            ) : (
-              <span>{(user.displayName || user.email || 'U').charAt(0).toUpperCase()}</span>
-            )}
-          </button>
-        ) : (
-          <button className="login-button" onClick={() => setShowAuth(true)}>Sign in</button>
-        )}
-      </div>
+      <AccountControls user={user} signOutUser={signOutUser} onSignIn={() => setShowAuth(true)} />
 
       <div className="top-bar">
        <h1>F
@@ -233,29 +199,6 @@ function App() {
       </div>
 
       {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
-
-      {showSignOutConfirm && (
-        <div className="confirm-overlay">
-          <section className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="signout-title">
-            <h2 id="signout-title">Log out?</h2>
-            <p>Are you sure you want to log out of your current account?</p>
-            <div className="confirm-actions">
-              <button className="secondary-button" onClick={() => setShowSignOutConfirm(false)}>
-                Cancel
-              </button>
-              <button
-                className="primary-button"
-                onClick={async () => {
-                  await signOutUser();
-                  setShowSignOutConfirm(false);
-                }}
-              >
-                Confirm Logout
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
 
       {error && <p className="error-msg">{error}</p>}
 

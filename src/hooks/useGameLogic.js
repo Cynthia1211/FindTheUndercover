@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
@@ -22,6 +22,11 @@ export function useGameLogic() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
+  const playSfx = useCallback(sound => {
+    if (isSfxEnabled) {
+      document.getElementById(sound)?.play();
+    }
+  }, [isSfxEnabled]);
 
   useEffect(() => {
     if (!voteFeedback) return undefined;
@@ -51,7 +56,7 @@ export function useGameLogic() {
     }, 1000);
 
     return () => clearTimeout(timerId);
-  }, [currentRound, gameStatus, timeLeft]);
+  }, [currentRound, gameStatus, playSfx, timeLeft]);
 
   // Start a new game and reveal only the first clue for each NPC.
   const startGame = async (selectedCategory, selectedDifficulty) => {
@@ -162,14 +167,6 @@ export function useGameLogic() {
   setShowSettings(false);
   }
 
-  const backButton = () => {
-  setGameStatus('IDLE');
-  setGame(null);
-  setSelectedNpcId(null);
-  setVoteFeedback(null);
-  setShowInstructions(false);
-  setShowSettings(false);
-};
   const toggleMic = async () => {
   const audio = audioRef.current;
 
@@ -199,12 +196,6 @@ export function useGameLogic() {
     setIsSfxEnabled(previous => !previous);
   };
 
-  const playSfx = (sound) => {
-    if (isSfxEnabled){
-      document.getElementById(sound)?.play();
-    }
-  };
-
   return {
     loading,
     error,
@@ -215,7 +206,6 @@ export function useGameLogic() {
     showInstructions,
     voteFeedback,
     closeInstructions,
-    backButton,
     settings,
     closeSettings, 
     showSettings,
