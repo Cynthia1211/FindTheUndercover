@@ -4,13 +4,13 @@ import { wordsDb } from '../wordBank-config';
 // Load the word bank used to create new game instances.
 export async function fetchWordBank() {
   try {
-    const snapshot = await getDocs(collection(wordsDb, 'words'));
+    const snapshot = await getDocs(collection(wordsDb, 'sheridan-openhouse'));
     return snapshot.docs.map(wordDocument => ({
       id: wordDocument.id,
       ...wordDocument.data()
     }));
   } catch (error) {
-    console.error('Failed to get words from Firestore:', error);
+    console.error('Failed to get Sheridan words from Firestore:', error);
     throw error;
   }
 }
