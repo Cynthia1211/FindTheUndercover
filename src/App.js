@@ -222,14 +222,7 @@ function App() {
       </div>
 
       <div className="top-bar">
-       <h1>F
-      <span className="magnify-container">
-      <span className='base-letter'>i</span>
-      <span className="glass-emoji">🔍</span>
-        <span className="zoomed-letter">i</span>
-      </span>
-      nd the Undercover
-      </h1>
+      <h1>Welcome to Sheridan</h1>
       </div>
 
       {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
@@ -362,12 +355,13 @@ function App() {
       )}
 
       <nav className="nav-instructions">
-        <button className='back-button' onClick={()=> window.location.href='https://localhost:4173'}> 🏠︎ </button>
-        <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
-        <button className='fourth-button' onClick={settings}>⚙️</button>
+        <button className='back-button' onClick={()=> window.location.href='https://www.sheridancollege.ca/'}> 🏠︎ </button>
+        <img className="sheridan-logo" src={`${process.env.PUBLIC_URL}/SheridanC.gif`}/>
+        {/* <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
+        <button className='fourth-button' onClick={settings}>⚙️</button> */}
       </nav>
 
-      {showInstructions && (
+      {/* {showInstructions && (
         <div className="popup">
           <h2>INSTRUCTIONS</h2>
 
@@ -377,7 +371,7 @@ function App() {
 
           <button className="instruction-button" onClick={closeInstructions}>Close</button>
         </div>
-      )}
+      )} */}
 
 
       {showSettings && (
