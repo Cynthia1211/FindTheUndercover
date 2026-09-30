@@ -3,7 +3,7 @@ name: Deploy React App
 on:
   push:
     branches:
-      - sheridan-ophouse
+      - ophouse-backapi-change
 
 permissions:
   contents: read
