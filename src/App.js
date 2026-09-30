@@ -2,17 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
 import { useCategorySelection } from './hooks/useCategorySelection';
-import { useDifficultySelection } from './hooks/useDifficultySelection';
 import { useLeaderboard } from './hooks/useLeaderboard';
 import { useAuth } from './hooks/useAuth';
-import AuthPanel from './components/auth/AuthPanel';
 import './App.css';
 
 // Render the game screen and connect user actions to the game logic hook.
 function App() {
-  const { user, signOutUser } = useAuth();
-  const [showAuth, setShowAuth] = useState(false);
-  const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const { user } = useAuth();
   const [playingWordId, setPlayingWordId] = useState(null);
   const wordAudioRef = useRef(null);
 
@@ -52,11 +48,7 @@ function App() {
     handleCategoryChange: updateCategory
   } = useCategorySelection();
 
-  const {
-    selectedDifficulty,
-    difficulties,
-    handleDifficultyChange: updateDifficulty
-  } = useDifficultySelection();
+  const selectedDifficulty = 'Easy';
 
   const [restartPopupMessage, setRestartPopupMessage] = useState(null);
   const isGameSettled = gameStatus === 'WON' || gameStatus === 'LOST';
@@ -134,18 +126,6 @@ function App() {
     }
   };
 
-  const handleDifficultyChange = event => {
-    const nextDifficulty = event.target.value;
-    updateDifficulty(event);
-
-    if (gameStatus !== 'IDLE' && nextDifficulty !== selectedDifficulty) {
-      setRestartPopupMessage(
-        `Game restarts with category ${SELECTED_CATEGORY} and difficulty ${nextDifficulty}`
-      );
-      startGame(SELECTED_CATEGORY, nextDifficulty);
-    }
-  };
-
   const categorySelector = (
     <label className="category-selector">
       <span>Category:</span>
@@ -163,18 +143,10 @@ function App() {
     </label>
   );
 
-  const difficultySelector = (
-    <label className="category-selector difficulty-selector">
-      <span>Difficulty:</span>
-      <select value={selectedDifficulty} onChange={handleDifficultyChange}>
-        {difficulties.map(difficulty => (
-          <option key={difficulty} value={difficulty}>
-            {difficulty}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
+  const maxWordLength = game
+    ? Math.max(...game.npcs.map(npc => (npc.wordSan || '').length))
+    : 0;
+  const wordCardHeight = 210 + Math.max(0, Math.ceil(maxWordLength / 24) - 1) * 22;
 
   const handlePlayAgain = () => {
     clearLeaderboardMessage();
@@ -202,53 +174,9 @@ function App() {
         <source src={`${process.env.PUBLIC_URL}/WrongAnswer.mp3`} type="audio/mpeg" />
       </audio>
   
-      <div className="account-bar">
-        {user ? (
-          <button
-            className="account-avatar"
-            onClick={() => setShowSignOutConfirm(true)}
-            aria-label="Account options"
-            title={`Signed in as ${user.displayName || user.email}`}
-          >
-            {user.photoURL ? (
-              <img src={user.photoURL} alt="" />
-            ) : (
-              <span>{(user.displayName || user.email || 'U').charAt(0).toUpperCase()}</span>
-            )}
-          </button>
-        ) : (
-          <button className="login-button" onClick={() => setShowAuth(true)}>Sign in</button>
-        )}
-      </div>
-
       <div className="top-bar">
       <h1>Welcome to Sheridan</h1>
       </div>
-
-      {showAuth && <AuthPanel onClose={() => setShowAuth(false)} />}
-
-      {showSignOutConfirm && (
-        <div className="confirm-overlay">
-          <section className="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="signout-title">
-            <h2 id="signout-title">Log out?</h2>
-            <p>Are you sure you want to log out of your current account?</p>
-            <div className="confirm-actions">
-              <button className="secondary-button" onClick={() => setShowSignOutConfirm(false)}>
-                Cancel
-              </button>
-              <button
-                className="primary-button"
-                onClick={async () => {
-                  await signOutUser();
-                  setShowSignOutConfirm(false);
-                }}
-              >
-                Confirm Logout
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
 
       {error && <p className="error-msg">{error}</p>}
 
@@ -264,10 +192,9 @@ function App() {
         <div>
           <header className="game-header">
             {categorySelector}
-            {difficultySelector}
-            <span>Round: {currentRound} / 5</span>
+            {/* <span>Round: {currentRound} / 5</span> */}
             <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
-            <span>Score: {score}</span>
+            {/* <span>Score: {score}</span> */}
           </header>
 
           <div className="npc-grid">
@@ -277,7 +204,10 @@ function App() {
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
                 onClick={() => selectNpc(npc.id)}
               >
-                <div className={`word-card ${isGameSettled ? 'revealed' : 'masked'}`}>
+                <div
+                  className={`word-card ${isGameSettled ? 'revealed' : 'masked'}`}
+                  style={{ height: `${wordCardHeight}px` }}
+                >
                   {isGameSettled ? (
                     <>
                       {npc.wordImage ? (
@@ -289,7 +219,7 @@ function App() {
                       )}
                       <div className="word-card-footer">
                         <span className="word-card-word">{npc.wordSan}</span>
-                        <button
+                        {/* <button
                           type="button"
                           className="word-audio-button"
                           onClick={event => {
@@ -301,7 +231,7 @@ function App() {
                           title={npc.wordAudio ? 'Play pronunciation' : 'Audio unavailable'}
                         >
                           {playingWordId === npc.id ? '⏸️' : '🔊'}
-                        </button>
+                        </button> */}
                       </div>
                     </>
                   ) : (
@@ -344,9 +274,9 @@ function App() {
               <p>Civilian word: {game.civilianWord} | Undercover word: {game.undercoverWord}</p>
               <div className="score-actions">
                 <button className="primary-button" onClick={handlePlayAgain}>Play Again</button>
-                <button className="secondary-button" onClick={submitLeaderboardScore} disabled={submittingScore}>
+                {/* <button className="secondary-button" onClick={submitLeaderboardScore} disabled={submittingScore}>
                   {submittingScore ? 'Submitting...' : 'Submit Score'}
-                </button>
+                </button> */}
               </div>
               {leaderboardMessage && <p className="leaderboard-message" role="status">{leaderboardMessage}</p>}
             </div>
@@ -355,8 +285,10 @@ function App() {
       )}
 
       <nav className="nav-instructions">
-        <button className='back-button' onClick={()=> window.location.href='https://www.sheridancollege.ca/'}> 🏠︎ </button>
-        <img className="sheridan-logo" src={`${process.env.PUBLIC_URL}/SheridanC.gif`}/>
+        <button className='back-button' onClick={()=> window.location.href='https://www.sheridancollege.ca/'} aria-label="Sheridan College home">
+          <img className="home-logo" src={`${process.env.PUBLIC_URL}/sheridanLogo_1.jpeg`} alt="" />
+        </button>
+        <img className="sheridan-logo" src={`${process.env.PUBLIC_URL}/sheridanLogo.png`} alt="Sheridan College" />
         {/* <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
         <button className='fourth-button' onClick={settings}>⚙️</button> */}
       </nav>  

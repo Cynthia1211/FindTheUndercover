@@ -18,8 +18,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 .app-container h1 {
   margin: 0;
-  color: #312e81;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  color: #003B6E;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   letter-spacing: 0.04em;
   font-family: 'Lobster', cursive;
 
@@ -37,8 +37,8 @@
 .login-button {
   padding: 9px 16px;
   color: white;
-  background: #6366f1;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  background: #0A3967;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .28);
 }
 
 .auth-modal {
@@ -49,7 +49,7 @@
   width: min(460px, calc(100vw - 28px));
   padding: 28px 24px 24px;
   transform: translate(-50%, -50%);
-  border: 1px solid #e0e7ff;
+  border: 1px solid #0086A0;
   border-radius: 20px;
   background: white;
   box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
@@ -68,7 +68,7 @@
 .confirm-dialog {
   width: min(400px, 100%);
   padding: 28px 24px;
-  border: 1px solid #e0e7ff;
+  border: 1px solid #0086A0;
   border-radius: 20px;
   background: white;
   box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
@@ -76,7 +76,7 @@
 
 .confirm-dialog h2 {
   margin: 0 0 10px;
-  color: #312e81;
+  color: #003B6E;
 }
 
 .confirm-dialog p {
@@ -117,7 +117,7 @@
 
 .auth-panel h2 {
   margin-top: 0;
-  color: #312e81;
+  color: #003B6E;
 }
 
 .auth-form {
@@ -128,7 +128,7 @@
 .auth-form input {
   width: 100%;
   padding: 13px 14px;
-  border: 1px solid #c7d2fe;
+  border: 1px solid #0086A0;
   border-radius: 10px;
   font: inherit;
 }
@@ -149,7 +149,7 @@
   display: block;
   margin: 12px auto 0;
   padding: 4px 8px;
-  color: #4338ca;
+  color: #003B6E;
   background: transparent;
   font-size: .9rem;
 }
@@ -179,8 +179,8 @@
   border: 2px solid white;
   border-radius: 50%;
   color: white;
-  background: #6366f1;
-  box-shadow: 0 4px 12px rgba(49, 46, 129, .25);
+  background: #0A3967;
+  box-shadow: 0 4px 12px rgba(10, 57, 103, .25);
 }
 
 .account-avatar img {
@@ -227,8 +227,8 @@ button:disabled {
 /* Shared button styles */
 .primary-button {
   color: white;
-  background: #6366f1;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  background: #0A3967;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .28);
   display: block;
 
 
@@ -237,13 +237,13 @@ button:disabled {
 }
 
 .secondary-button {
-  color: #4338ca;
-  background: #e0e7ff;
+  color: #003B6E;
+  background: #2CBAD6;
 }
 
 /* .third-button{
-  background: #6366f1;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  background: #0A3967;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .28);
  
   width: auto;
   position: static;
@@ -255,8 +255,8 @@ button:disabled {
 
 /* .fourth-button{
   color: white;
-  background: #6366f1;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  background: #0A3967;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .28);
   width: auto;
   order: 2;
 } */
@@ -273,7 +273,7 @@ button:disabled {
   flex-direction: row;
   gap: 10px;
   padding: 10px;
-  background: #f7f3ff;
+  background: #2CBAD6;
   font-size: 16px;
   margin-top: -9px;
 
@@ -292,7 +292,7 @@ button:disabled {
   flex-direction: row;
   gap: 10px;
   padding: 10px;
-  background: #f7f3ff;
+  background: #2CBAD6;
   font-size: 16px;
   margin-top: -9px;
 
@@ -331,13 +331,13 @@ button:disabled {
   left: 0.30em;
   margin-bottom: 1em;
   z-index: 2;
-  color: #312e81; 
+  color: #003B6E; 
   transform: scale(1.35);
 } */
 
 /* .back-button{
-  background: #6366f1;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .28);
+  background: #0A3967;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .28);
  
   width: auto;
   position: static;
@@ -350,7 +350,7 @@ button:disabled {
 
 .popup{
   width: min(400px, calc(100vw - 28px));
-  background: #e0e7ff;
+  background: #2CBAD6;
   border-radius: 16px;
   position: fixed;
   top:50%;
@@ -376,36 +376,62 @@ button:disabled {
   padding: 14px 22px;
   border-radius: 12px;
   color: white;
-  background: #4338ca;
-  box-shadow: 0 10px 25px rgba(67, 56, 202, .28);
+  background: #0A3967;
+  box-shadow: 0 10px 25px rgba(10, 57, 103, .28);
   font-weight: 700;
 }
 
 .nav-instructions{
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  box-sizing: border-box;
   width: 100%;
-  height: 60px;
+  height: 72px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
-  padding: 14px 22px;
+  padding: 5px 19px;
   color: white;
-  background: #003B6E;
-  box-shadow: 0 10px 25px rgba(67, 56, 202, .28);
+  background: #0A3967;
+  box-shadow: 0 10px 25px rgba(10, 57, 103, .28);
   font-weight: 700;
 }
 
 .sheridan-logo{
-  width: 100px;
-  height: auto;
+  position: absolute;
+  left: 14px;
+  width: min(280px, calc(50% - 40px));
+  height: 53px;
   object-fit: contain;
-  align-items: center;
-  margin-left: 500px;
-  top: 50;
-  /* position: absolute; */
+  margin: 0;
+}
+
+.home-logo {
+  display: block;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.back-button {
+  position: absolute;
+  left: calc(50% - 23px);
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-instructions .back-button {
+  padding: 0;
 }
 
 .category-selector {
@@ -417,9 +443,9 @@ button:disabled {
 .category-selector select {
   min-width: 130px;
   padding: 8px 30px 8px 10px;
-  border: 1px solid #c7d2fe;
+  border: 1px solid #0086A0;
   border-radius: 8px;
-  color: #3730a3;
+  color: #003B6E;
   background: white;
   font: inherit;
   font-weight: 700;
@@ -431,18 +457,19 @@ button:disabled {
 }
 
 .instruction-button{
-  color:#6366f1;
-  background: #f7f3ff; 
+  color:#003B6E;
+  background: #2CBAD6; 
 }
 /* Game header and NPC card layout */
 .game-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   max-width: 1180px;
   margin: 32px auto 24px;
   padding: 16px 22px;
   border-radius: 16px;
-  color: #4338ca;
+  color: #003B6E;
   background: rgba(255, 255, 255, .78);
   font-weight: 700;
 }
@@ -479,29 +506,30 @@ button:disabled {
 .npc-card:hover,
 .npc-card.active {
   transform: translateY(-5px);
-  border-color: #818cf8;
-  box-shadow: 0 18px 34px rgba(99, 102, 241, .22);
+  border-color: #003B6E;
+  box-shadow: 0 18px 34px rgba(10, 57, 103, .22);
 }
 
 .word-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: min(100%, 180px);
-  aspect-ratio: 1;
-  margin: 0 auto 10px;
+  box-sizing: border-box;
+  width: min(100%, 240px);
+  flex: 0 0 auto;
+  margin: 0 auto 4px;
   padding: 10px;
   overflow: hidden;
-  border: 2px solid #c7d2fe;
+  border: 2px solid #2CBAD6;
   border-radius: 18px;
-  background: #eef2ff;
-  box-shadow: 0 8px 18px rgba(99, 102, 241, .14);
+  background: #E6F8FC;
+  box-shadow: 0 8px 18px rgba(10, 57, 103, .14);
 }
 
 .word-card.masked {
   align-items: center;
   justify-content: center;
-  color: #4338ca;
+  color: #003B6E;
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: .12em;
@@ -518,7 +546,7 @@ button:disabled {
 .word-card-image-placeholder {
   display: grid;
   place-items: center;
-  color: #818cf8;
+  color: #003B6E;
   font-size: 2rem;
 }
 
@@ -531,12 +559,13 @@ button:disabled {
 }
 
 .word-card-word {
-  overflow: hidden;
-  color: #3730a3;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #003B6E;
   font-size: 1rem;
   font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
+  white-space: normal;
 }
 
 .word-audio-button {
@@ -547,7 +576,7 @@ button:disabled {
   padding: 0;
   place-items: center;
   border-radius: 50%;
-  color: #4338ca;
+  color: #003B6E;
   background: white;
   font-size: 1rem;
 }
@@ -555,9 +584,9 @@ button:disabled {
 /* NPC avatar image */
 .npc-image {
   display: block;
-  width: 116px;
-  height: 142px;
-  margin: 10px auto 4px;
+  width: 93px;
+  height: 114px;
+  margin: 4px auto 4px;
   object-fit: contain;
 }
 
@@ -576,7 +605,7 @@ button:disabled {
   padding: 12px 14px;
   border-radius: 12px;
   color: #475569;
-  background: #f8fafc;
+  background: #EFEFEF;
   text-align: left;
   list-style: none;
 }
@@ -654,7 +683,7 @@ button:disabled {
 
 .leaderboard-message {
   margin-bottom: 0;
-  color: #4338ca !important;
+  color: #003B6E !important;
   font-weight: 700;
 }
 

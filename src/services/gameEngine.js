@@ -46,14 +46,13 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
       : wordData.clues || [];
   };
 
-  // Divide civilian clues into separate packs so NPCs do not all have the same clues.
+  // Deal every civilian clue across the three civilian NPCs as evenly as possible.
   const shuffledCivilianClues = shuffle(cluesFor(civilianObj));
-  const civilianCluePacks = [
-    shuffledCivilianClues.slice(0, 5),
-    shuffledCivilianClues.slice(5, 10),
-    shuffledCivilianClues.slice(10, 15)
-  ];
-  const undercoverCluePack = shuffle(cluesFor(undercoverObj)).slice(0, 5);
+  const civilianCluePacks = [[], [], []];
+  shuffledCivilianClues.forEach((clue, index) => {
+    civilianCluePacks[index % civilianCluePacks.length].push(clue);
+  });
+  const undercoverCluePack = shuffle(cluesFor(undercoverObj));
 
   // Randomly assign the undercover role to one of the four NPCs.
   const undercoverIndex = Math.floor(Math.random() * 4);
@@ -77,7 +76,7 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
       wordImage: wordData.img,
       wordAudio: wordData.audio,
       allClues,
-      displayedClues: [allClues[0]],
+      displayedClues: allClues.slice(0, 1),
     };
   });
 
