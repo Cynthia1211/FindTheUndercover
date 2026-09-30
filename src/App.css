@@ -346,7 +346,7 @@ button:disabled {
   margin-left: 0;
   margin-right: auto;
 
-} */ 
+} */
 
 .popup{
   width: min(400px, calc(100vw - 28px));

@@ -360,7 +360,7 @@ function App() {
         {/* <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
         <button className='fourth-button' onClick={settings}>⚙️</button> */}
       </nav>  
-
+ 
       {/* {showInstructions && (
         <div className="popup">
           <h2>INSTRUCTIONS</h2>
