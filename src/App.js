@@ -359,7 +359,7 @@ function App() {
         <img className="sheridan-logo" src={`${process.env.PUBLIC_URL}/SheridanC.gif`}/>
         {/* <button className="third-button" onClick={instruction} aria-label="Instructions" title="Instructions">ℹ️</button>
         <button className='fourth-button' onClick={settings}>⚙️</button> */}
-      </nav> 
+      </nav>  
 
       {/* {showInstructions && (
         <div className="popup">
