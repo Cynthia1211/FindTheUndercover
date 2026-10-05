@@ -18,7 +18,7 @@ export function useGameLogic() {
   const [isSfxEnabled, setIsSfxEnabled] = useState(true);
   const [score, setScore] = useState(0);
 
-  // Start a new game and reveal only the first clue for each NPC.
+  // Start a new game with one clue visible for each NPC.
   const startGame = async (selectedCategory, selectedDifficulty) => {
     setLoading(true);
     setError(null);
@@ -49,7 +49,7 @@ export function useGameLogic() {
 
   // Reveal one additional clue for every NPC.
   const nextRound = () => {
-    if (!game || gameStatus !== 'PLAYING' || currentRound >= 5) return;
+    if (!game || gameStatus !== 'PLAYING' || currentRound >= 6) return;
 
     const nextRoundNumber = currentRound + 1;
     const npcsWithNewClues = game.npcs.map(npc => ({

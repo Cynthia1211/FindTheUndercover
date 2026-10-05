@@ -5,7 +5,7 @@
 
 .app-container {
   min-height: 100vh;
-  padding: 128px 24px 64px;
+  padding: 72px 24px 64px;
   color: #1f2937;
   text-align: center;
   background-image: 
@@ -465,8 +465,8 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1180px;
-  margin: 32px auto 24px;
+  max-width: 1280px;
+  margin: 0 auto 24px;
   padding: 16px 22px;
   border-radius: 16px;
   color: #003B6E;
@@ -485,12 +485,12 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
 .npc-card {
-  height: 570px;
+  height: 540px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -515,7 +515,7 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
-  width: min(100%, 240px);
+  width: min(100%, 288px);
   flex: 0 0 auto;
   margin: 0 auto 4px;
   padding: 10px;
@@ -617,7 +617,7 @@ button:disabled {
 }
 
 .npc-card li {
-  padding: 5px 0;
+  padding: 2px 0;
   font-size: .9rem;
   line-height: 1.45;
 }
@@ -708,7 +708,7 @@ button:disabled {
 
 @media (max-width: 480px) {
   .app-container {
-    padding: 140px 14px 48px;
+    padding: 72px 14px 48px;
   }
 
   .account-bar {

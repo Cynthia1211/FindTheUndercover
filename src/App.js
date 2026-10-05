@@ -142,7 +142,7 @@ function App() {
   const maxWordLength = game
     ? Math.max(...game.npcs.map(npc => (npc.wordSan || '').length))
     : 0;
-  const wordCardHeight = 210 + Math.max(0, Math.ceil(maxWordLength / 24) - 1) * 22;
+  const wordCardHeight = 168 + Math.max(0, Math.ceil(maxWordLength / 24) - 1) * 22;
 
   const handlePlayAgain = () => {
     clearLeaderboardMessage();
@@ -240,8 +240,8 @@ function App() {
                 <button className="primary-button" onClick={handleNewWords}>
                   Explore more
                 </button>
-                <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 5}>
-                  {currentRound >= 5 ? 'All Clues Revealed' : 'Tell me more'}
+                <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 6}>
+                  {currentRound >= 6 ? 'No more to show' : 'Tell me more'}
                 </button>
               </div>
             </>
