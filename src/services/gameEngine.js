@@ -26,15 +26,18 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
   }
 
   const categoryWords = wordsData.filter(item => item.category === selectedCategory);
-  if (categoryWords.length < 2) {
-    throw new Error(`Category "${selectedCategory}" needs at least two words.`);
+  const uniqueCategoryWords = [...new Map(
+    categoryWords
+      .filter(item => item.word)
+      .map(item => [item.word, item])
+  ).values()];
+
+  if (uniqueCategoryWords.length < 3) {
+    throw new Error(`Category "${selectedCategory}" needs at least three different words.`);
   }
-  
-  // Choose two different words: one for civilians and one for the undercover.
-  const civilianIndex = Math.floor(Math.random() * categoryWords.length);
-  const civilianObj = categoryWords[civilianIndex];
-  const remainingWords = categoryWords.filter((_, index) => index !== civilianIndex);
-  const undercoverObj = remainingWords[Math.floor(Math.random() * remainingWords.length)];
+
+  // Choose three different words and give one to each NPC.
+  const selectedWords = shuffle(uniqueCategoryWords).slice(0, 3);
 
   // Use Sanskrit clues for Advanced and English clues for Easy.
   const cluesFor = wordData => {
@@ -46,25 +49,14 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
       : wordData.clues || [];
   };
 
-  // Deal every civilian clue across the three civilian NPCs as evenly as possible.
-  const shuffledCivilianClues = shuffle(cluesFor(civilianObj));
-  const civilianCluePacks = [[], [], []];
-  shuffledCivilianClues.forEach((clue, index) => {
-    civilianCluePacks[index % civilianCluePacks.length].push(clue);
-  });
-  const undercoverCluePack = shuffle(cluesFor(undercoverObj));
+  // Randomly assign the undercover role to one of the three NPCs.
+  const undercoverIndex = Math.floor(Math.random() * 3);
+  const selectedNpcImages = shuffle(NPC_IMAGES).slice(0, 3);
 
-  // Randomly assign the undercover role to one of the four NPCs.
-  const undercoverIndex = Math.floor(Math.random() * 4);
-  const selectedNpcImages = shuffle(NPC_IMAGES).slice(0, 4);
-  let civilianPackIndex = 0;
-
-  const npcs = [0, 1, 2, 3].map(i => {
+  const npcs = [0, 1, 2].map(i => {
     const isUndercover = i === undercoverIndex;
-    const wordData = isUndercover ? undercoverObj : civilianObj;
-    const allClues = isUndercover
-      ? undercoverCluePack
-      : civilianCluePacks[civilianPackIndex++];
+    const wordData = selectedWords[i];
+    const allClues = shuffle(cluesFor(wordData));
 
     return {
       id: i + 1,
@@ -75,6 +67,7 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
       wordSan: wordData['word-san'],
       wordImage: wordData.img,
       wordAudio: wordData.audio,
+      programPage: wordData.programPage,
       allClues,
       displayedClues: allClues.slice(0, 1),
     };
@@ -83,8 +76,8 @@ export function createGameInstance(wordsData, selectedCategory, selectedDifficul
   return {
     // category: selectedCategory,
     difficulty: selectedDifficulty,
-    civilianWord: civilianObj.word,
-    undercoverWord: undercoverObj.word,
+    civilianWord: selectedWords.filter((_, index) => index !== undercoverIndex).map(word => word.word).join(', '),
+    undercoverWord: selectedWords[undercoverIndex].word,
     npcs
   };
 }

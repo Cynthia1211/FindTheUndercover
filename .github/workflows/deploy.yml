@@ -3,7 +3,7 @@ name: Deploy React App
 on:
   push:
     branches:
-      - ophouse-backapi-change
+      - ophouse_updated
 
 permissions:
   contents: read

@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchWordBank } from '../services/wordServices';
 import { createGameInstance } from '../services/gameEngine';
 
-export const MAX_ATTEMPTS = 3;
-
 // Manage the game state and expose actions used by the UI.
 export function useGameLogic() {
   const [loading, setLoading] = useState(false);
@@ -12,56 +10,20 @@ export function useGameLogic() {
   const [game, setGame] = useState(null);
   const [currentRound, setCurrentRound] = useState(1);
   const [selectedNpcId, setSelectedNpcId] = useState(null);
-  const [voteFeedback, setVoteFeedback] = useState(null);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [musicError, setMusicError] = useState(null);
   const audioRef = useRef(null);
   const [isSfxEnabled, setIsSfxEnabled] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(null);
-  const [attemptsLeft, setAttemptsLeft] = useState(MAX_ATTEMPTS);
   const [score, setScore] = useState(0);
-
-  useEffect(() => {
-    if (!voteFeedback) return undefined;
-
-    const timeoutId = setTimeout(() => setVoteFeedback(null), 2000);
-    return () => clearTimeout(timeoutId);
-  }, [voteFeedback]);
-
-  // Start the final-round countdown and automatically lose when it expires.
-  useEffect(() => {
-    if (gameStatus !== 'PLAYING' || currentRound < 5 || timeLeft === null) {
-      return undefined;
-    }
-
-    if (timeLeft <= 0) {
-      setGameStatus('LOST');
-      setSelectedNpcId(null);
-      setVoteFeedback(null);
-      playSfx("FailedGame");
-      
-      return undefined;
-
-    }
-
-    const timerId = setTimeout(() => {
-      setTimeLeft(previousTime => previousTime - 1);
-    }, 1000);
-
-    return () => clearTimeout(timerId);
-  }, [currentRound, gameStatus, timeLeft]);
 
   // Start a new game and reveal only the first clue for each NPC.
   const startGame = async (selectedCategory, selectedDifficulty) => {
     setLoading(true);
     setError(null);
     setSelectedNpcId(null);
-    setVoteFeedback(null);
     setCurrentRound(1);
-    setTimeLeft(null);
-    setAttemptsLeft(MAX_ATTEMPTS);
 
 
     try {
@@ -82,7 +44,6 @@ export function useGameLogic() {
   const selectNpc = (npcId) => {
     if (gameStatus === 'PLAYING') {
       setSelectedNpcId(npcId);
-      setVoteFeedback(null);
     }
   };
 
@@ -99,51 +60,7 @@ export function useGameLogic() {
     setCurrentRound(nextRoundNumber);
     setGame({ ...game, npcs: npcsWithNewClues });
     setSelectedNpcId(null);
-    setVoteFeedback(null);
 
-    if (nextRoundNumber === 5) {
-      setTimeLeft(60);
-      playSfx("ClockTicking");
-    }else{
-      setTimeLeft(null);
-    }
-  };
-
-  // Check the selected NPC and either end the game or provide feedback.
-  const submitVote = () => {
-    if (!selectedNpcId || gameStatus !== 'PLAYING') return;
-
-    const targetNpc = game.npcs.find(n => n.id === selectedNpcId);
-
-    if (targetNpc.role === 'UNDERCOVER') {
-      setGameStatus('WON');
-
-      document.getElementById("ClockTicking")?.pause();
-
-
-      playSfx("CorrectAnswer");
-      const points = game.difficulty === 'Advanced' ? 200 : 100;
-      setScore(previousScore => previousScore + points);
-      setSelectedNpcId(null);
-      setVoteFeedback(null);
-      return;
-    }
-
-    const remainingAttempts = attemptsLeft - 1;
-    setAttemptsLeft(remainingAttempts);
-
-    if (remainingAttempts <= 0) {
-      setGameStatus('LOST');
-      playSfx("FailedGame");
-      document.getElementById("ClockTicking")?.pause();
-
-
-    } else {
-      setVoteFeedback('That is not the undercover. Try again!');
-      playSfx("WrongAnswer");
-    }
-
-    setSelectedNpcId(null);
   };
 
   const instruction =  () => {
@@ -166,7 +83,6 @@ export function useGameLogic() {
   setGameStatus('IDLE');
   setGame(null);
   setSelectedNpcId(null);
-  setVoteFeedback(null);
   setShowInstructions(false);
   setShowSettings(false);
 };
@@ -213,7 +129,6 @@ export function useGameLogic() {
     currentRound,
     selectedNpcId,
     showInstructions,
-    voteFeedback,
     closeInstructions,
     backButton,
     settings,
@@ -226,12 +141,9 @@ export function useGameLogic() {
     musicError,
     toggleSfx,
     isSfxEnabled,
-    timeLeft,
-    attemptsLeft,
     score,
     startGame,
     selectNpc,
-    submitVote,
     nextRound
   };
 }

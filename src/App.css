@@ -483,7 +483,7 @@ button:disabled {
 
 .npc-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   max-width: 1180px;
   margin: 0 auto;
@@ -513,7 +513,7 @@ button:disabled {
 .word-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   box-sizing: border-box;
   width: min(100%, 240px);
   flex: 0 0 auto;
@@ -526,6 +526,7 @@ button:disabled {
   box-shadow: 0 8px 18px rgba(10, 57, 103, .14);
 }
 
+/* Masked word cards are disabled: word cards stay visible throughout the game.
 .word-card.masked {
   align-items: center;
   justify-content: center;
@@ -534,6 +535,7 @@ button:disabled {
   font-weight: 800;
   letter-spacing: .12em;
 }
+*/
 
 .word-card-image,
 .word-card-image-placeholder {
@@ -559,12 +561,15 @@ button:disabled {
 }
 
 .word-card-word {
+  display: block;
+  width: 100%;
   min-width: 0;
   overflow-wrap: anywhere;
   color: #003B6E;
   font-size: 1rem;
   font-weight: 800;
   line-height: 1.25;
+  text-align: center;
   white-space: normal;
 }
 
@@ -607,7 +612,8 @@ button:disabled {
   color: #475569;
   background: #EFEFEF;
   text-align: left;
-  list-style: none;
+  list-style: disc;
+  padding-left: 28px;
 }
 
 .npc-card li {
@@ -621,6 +627,13 @@ button:disabled {
   justify-content: center;
   gap: 14px;
   margin-top: 28px;
+}
+
+.program-link-hint {
+  margin: 18px 0 -16px;
+  color: #64748b;
+  font-size: .8rem;
+  text-align: center;
 }
 
 .game-actions button {

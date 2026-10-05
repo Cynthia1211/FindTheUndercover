@@ -4,7 +4,7 @@ import { wordsDb } from '../wordBank-config';
 // Load the word bank used to create new game instances.
 export async function fetchWordBank() {
   try {
-    const snapshot = await getDocs(collection(wordsDb, 'sheridan-openhouse'));
+    const snapshot = await getDocs(collection(wordsDb, 'sheridan-updated'));
     return snapshot.docs.map(wordDocument => ({
       id: wordDocument.id,
       ...wordDocument.data()

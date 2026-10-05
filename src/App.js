@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useEffect, useRef, useState } from 'react';
-import { MAX_ATTEMPTS, useGameLogic } from './hooks/useGameLogic';
+import { useGameLogic } from './hooks/useGameLogic';
 import { useCategorySelection } from './hooks/useCategorySelection';
 import { useLeaderboard } from './hooks/useLeaderboard';
 import { useAuth } from './hooks/useAuth';
@@ -19,7 +19,6 @@ function App() {
     game,
     currentRound,
     selectedNpcId,
-    voteFeedback,
     showInstructions,
     closeInstructions,
     backButton,
@@ -33,12 +32,9 @@ function App() {
     musicError,
     toggleSfx,
     isSfxEnabled,
-    timeLeft,
-    attemptsLeft,
     score,
     startGame,
     selectNpc,
-    submitVote,
     nextRound
   } = useGameLogic();
 
@@ -153,6 +149,15 @@ function App() {
     startGame(SELECTED_CATEGORY, selectedDifficulty);
   };
 
+  const handleNewWords = () => {
+    startGame(SELECTED_CATEGORY, selectedDifficulty);
+  };
+
+  const openProgramPage = programPage => {
+    if (!programPage) return;
+    window.open(programPage, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="app-container">
       <audio ref={audioRef} id="Undercoversong" loop>
@@ -166,10 +171,6 @@ function App() {
       <audio id="FailedGame">
         <source src={`${process.env.PUBLIC_URL}/FailedGame.mp3`} type="audio/mpeg" />
       </audio>
-      <audio id="ClockTicking">
-        <source src={`${process.env.PUBLIC_URL}/ClockTicking.mp3`} type="audio/mpeg" />
-      </audio>
-
       <audio id="WrongAnswer">
         <source src={`${process.env.PUBLIC_URL}/WrongAnswer.mp3`} type="audio/mpeg" />
       </audio>
@@ -193,7 +194,6 @@ function App() {
           <header className="game-header">
             {categorySelector}
             {/* <span>Round: {currentRound} / 5</span> */}
-            <span>Attempts: {attemptsLeft} / {MAX_ATTEMPTS}</span>
             {/* <span>Score: {score}</span> */}
           </header>
 
@@ -202,76 +202,55 @@ function App() {
               <div
                 key={npc.id}
                 className={`npc-card ${selectedNpcId === npc.id ? 'active' : ''}`}
-                onClick={() => selectNpc(npc.id)}
+                onClick={() => {
+                  selectNpc(npc.id);
+                  openProgramPage(npc.programPage);
+                }}
               >
                 <div
-                  className={`word-card ${isGameSettled ? 'revealed' : 'masked'}`}
+                  className="word-card revealed"
                   style={{ height: `${wordCardHeight}px` }}
                 >
-                  {isGameSettled ? (
-                    <>
-                      {npc.wordImage ? (
-                        <img className="word-card-image" src={npc.wordImage} alt={`Illustration for ${npc.wordSan}`} />
-                      ) : (
-                        <div className="word-card-image-placeholder" aria-label={`No image available for ${npc.wordSan}`}>
-                          🖼️
-                        </div>
-                      )}
-                      <div className="word-card-footer">
-                        <span className="word-card-word">{npc.wordSan}</span>
-                        {/* <button
-                          type="button"
-                          className="word-audio-button"
-                          onClick={event => {
-                            event.stopPropagation();
-                            playWordAudio(npc.wordAudio, npc.id);
-                          }}
-                          disabled={!npc.wordAudio}
-                          aria-label={playingWordId === npc.id ? `Stop audio for ${npc.wordSan}` : `Play audio for ${npc.wordSan}`}
-                          title={npc.wordAudio ? 'Play pronunciation' : 'Audio unavailable'}
-                        >
-                          {playingWordId === npc.id ? '⏸️' : '🔊'}
-                        </button> */}
-                      </div>
-                    </>
+                  {npc.wordImage ? (
+                    <img className="word-card-image" src={npc.wordImage} alt={`Illustration for ${npc.wordSan}`} />
                   ) : (
-                    <span className="word-card-mask" aria-label="Word hidden">???</span>
+                    <div className="word-card-image-placeholder" aria-label={`No image available for ${npc.wordSan}`}>
+                      🖼️
+                    </div>
                   )}
+                  <div className="word-card-footer">
+                    <span className="word-card-word">{npc.wordSan}</span>
+                    {/* Word audio is intentionally disabled for now. */}
+                  </div>
                 </div>
                 <img className="npc-image" src={npc.image} alt={`NPC ${npc.id}`} />
                 <ul>
                   {npc.displayedClues.map((clue, i) => (
-                    <li key={i}><strong>Clue {i + 1}:</strong> {clue}</li>
+                    <li key={i}>{clue}</li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
 
-          {voteFeedback && <p className="vote-feedback">{voteFeedback}</p>}
-
           {gameStatus === 'PLAYING' && (
-            <div className="game-actions">
-              <button className="primary-button" onClick={submitVote} disabled={!selectedNpcId}>
-                Vote for Undercover
-              </button>
-              <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 5}>
-                {currentRound >= 5 ? 'Final Round' : 'More Clues'}
-              </button>
-            </div>
-          )}
-
-          {gameStatus === 'PLAYING' && currentRound === 5 && timeLeft !== null && (
-            <p className="countdown" role="timer">
-              All clues revealed! Find the undercover in {timeLeft}s
-            
-            </p>
+            <>
+              <p className="program-link-hint">Click the NPC card to learn more about the program</p>
+              <div className="game-actions">
+                <button className="primary-button" onClick={handleNewWords}>
+                  Explore more
+                </button>
+                <button className="secondary-button" onClick={nextRound} disabled={currentRound >= 5}>
+                  {currentRound >= 5 ? 'All Clues Revealed' : 'Tell me more'}
+                </button>
+              </div>
+            </>
           )}
 
           {(gameStatus === 'WON' || gameStatus === 'LOST') && (
             <div className={`result-banner ${gameStatus}`}>
               <h2>{gameStatus === 'WON' ? '🎉 You found the undercover!' : '💥 The undercover got away!'}</h2>
-              <p>Civilian word: {game.civilianWord} | Undercover word: {game.undercoverWord}</p>
+              <p>Civilian words: {game.civilianWord} | Undercover word: {game.undercoverWord}</p>
               <div className="score-actions">
                 <button className="primary-button" onClick={handlePlayAgain}>Play Again</button>
                 {/* <button className="secondary-button" onClick={submitLeaderboardScore} disabled={submittingScore}>
