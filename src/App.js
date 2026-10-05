@@ -159,7 +159,10 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div
+      className="app-container"
+      style={{ '--app-background-image': `url(${process.env.PUBLIC_URL}/sheridan_background.webp)` }}
+    >
       <audio ref={audioRef} id="Undercoversong" loop>
         <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
       </audio>
