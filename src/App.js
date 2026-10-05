@@ -9,6 +9,9 @@ import './App.css';
 // Render the game screen and connect user actions to the game logic hook.
 function App() {
   const { user } = useAuth();
+  const publicBasePath = window.location.pathname.endsWith('/')
+    ? window.location.pathname
+    : `${window.location.pathname}/`;
   const [playingWordId, setPlayingWordId] = useState(null);
   const wordAudioRef = useRef(null);
 
@@ -161,7 +164,7 @@ function App() {
   return (
     <div
       className="app-container"
-      style={{ '--app-background-image': `url(${process.env.PUBLIC_URL}/sheridan_background.webp)` }}
+      style={{ '--app-background-image': `url(${publicBasePath}sheridan_background.webp)` }}
     >
       <audio ref={audioRef} id="Undercoversong" loop>
         <source src={`${process.env.PUBLIC_URL}/Undercoversong.mp3`} type="audio/mpeg" />
