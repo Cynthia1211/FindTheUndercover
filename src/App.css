@@ -515,7 +515,7 @@ button:disabled {
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
-  width: min(100%, 288px);
+  width: min(100%, 360px);
   flex: 0 0 auto;
   margin: 0 auto 4px;
   padding: 10px;

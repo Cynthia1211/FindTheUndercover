@@ -145,7 +145,7 @@ function App() {
   const maxWordLength = game
     ? Math.max(...game.npcs.map(npc => (npc.wordSan || '').length))
     : 0;
-  const wordCardHeight = 168 + Math.max(0, Math.ceil(maxWordLength / 24) - 1) * 22;
+  const wordCardHeight = 168 + Math.max(0, Math.ceil(maxWordLength / 28) - 1) * 22;
 
   const handlePlayAgain = () => {
     clearLeaderboardMessage();
